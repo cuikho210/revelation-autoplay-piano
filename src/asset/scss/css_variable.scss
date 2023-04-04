@@ -1,0 +1,26 @@
+@import "./config.scss";
+
+@function convertHexToRGB($hex) {
+    @return red($hex), green($hex), blue($hex);
+}
+
+@mixin generate_colors($colors) {
+    // Colors, RGB Colors
+    @each $color, $value in $colors {
+        @if str-slice(#{$value}, 1, 1) == "#" {
+            --#{$color}: #{$value};
+            --#{$color}--rgb: #{convertHexToRGB($value)};
+        } @else {
+            --#{$color}: var(--#{$value});
+            --#{$color}--rgb: var(--#{$value}--rgb);
+        }
+    }
+}
+
+:root {
+    @include generate_colors($color--light);
+}
+
+:root[data-theme="dark"] {
+    @include generate_colors($color--dark);
+}

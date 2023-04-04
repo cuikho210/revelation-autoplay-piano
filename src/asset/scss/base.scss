@@ -1,0 +1,58 @@
+@import './config.scss';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba($color-primary-1, 0.5);
+    border-radius: 5px;
+
+    &:hover {
+        background-color: rgba($color-primary-2, 0.5);
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: $font-family-primary;
+    font-size: $font-size-primary;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    transition: background-color $transition-time, color $transition-time;
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-text-link);
+    transition: color $transition-time--short;
+
+    &:hover {
+        color: $color-primary-1;
+    }
+}
+
+.material-icons,
+.material-icons-round,
+.material-icons-outlined,
+.material-icons-sharp,
+.material-icons-two-tone {
+    user-select: none;
+}

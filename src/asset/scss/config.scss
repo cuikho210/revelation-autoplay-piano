@@ -1,0 +1,36 @@
+/*\
+| | 
+| | Color
+| | 
+\*/
+
+$color-primary-1: #ff907f;
+$color-primary-2: #ff90ff;
+
+$color--light: (
+    color-bg-primary: #fff,
+    color-text-primary: #000,
+    color-text-link: #00a1b6
+);
+
+$color--dark: (
+    color-bg-primary: #141414,
+    color-text-primary: #fff,
+    color-text-link: #46ffe0
+);
+
+/*\
+| | 
+| | Layout
+| | 
+\*/
+
+$font-size-primary: 14px;
+$font-family-primary: 'Mali', cursive;
+
+$sidebar-width: 300px;
+
+$breakpoint-mobile: 768px;
+
+$transition-time: 300ms;
+$transition-time--short: 150ms;
