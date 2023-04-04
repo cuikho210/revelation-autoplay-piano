@@ -17,6 +17,10 @@ let layoutStore = useLayoutStore()
     </div>
 
     <div class="right">
+        <span @click="layoutStore.toggleTheme()" class="btn material-icons-round" title="Toggle Theme">
+            {{ layoutStore.theme_mode == "light" ? "light_mode" : "dark_mode" }}
+        </span>
+
         <span @click="appWindow.minimize()" class="btn btn-minimize material-icons-round" title="Minimize">remove</span>
         <span @click="appWindow.close()" class="btn btn-close material-icons-round" title="Close">close</span>
     </div>

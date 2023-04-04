@@ -65,6 +65,7 @@ router.beforeEach((to, from, next) => {
 
     let layoutStore = useLayoutStore()
     layoutStore.setTitle(title)
+    layoutStore.closeMenu()
 
     Array.from(document.querySelectorAll("[data-vue-router-controlled]")).map(el => el.parentNode?.removeChild(el))
 

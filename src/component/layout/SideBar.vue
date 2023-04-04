@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import useLayoutStore from "../../store/layout.store"
+import SidebarButton from "../button/SidebarButton.vue"
+
 let layoutStore = useLayoutStore()
 
 </script>
@@ -26,6 +28,16 @@ let layoutStore = useLayoutStore()
                 <small>Mã nguồn mở tại <a target="_blank" href="https://github.com/cuikho210/revelation-autoplay-piano">@cuikho210/revelation-autoplay-piano</a></small>
             </div>
         </header>
+
+        <main>
+            <div>
+                <SidebarButton icon="home" href="/">Trang Chủ</SidebarButton>
+                <SidebarButton icon="build" href="/config">Cấu Hình</SidebarButton>
+                <SidebarButton icon="piano" href="/add-music">Thêm Nhạc</SidebarButton>
+                <SidebarButton icon="piano" href="/music">Danh Sách Nhạc</SidebarButton>
+                <SidebarButton icon="settings" href="/setting">Cài Đặt</SidebarButton>
+            </div>
+        </main>
     </div>
 </section>
 </template>
@@ -74,7 +86,7 @@ let layoutStore = useLayoutStore()
             text-align: center;
             padding: .25rem;
             padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.05);
+            // border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.05);
 
             .material-icons-round {
                 background-color: $color-primary-1;
