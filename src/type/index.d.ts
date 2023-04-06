@@ -6,16 +6,16 @@ interface Position {
 namespace Piano {
     interface Octaves {
         "C": Position
-        "C#": Position
+        "Db": Position
         "D": Position
-        "D#": Position
+        "Eb": Position
         "E": Position
         "F": Position
-        "F#": Position
+        "Gb": Position
         "G": Position
-        "G#": Position
+        "Ab": Position
         "A": Position
-        "A#": Position
+        "Bb": Position
         "B": Position
     }
 

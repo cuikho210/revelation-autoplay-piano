@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { registerShortcut } from "./util/register_global_shortcut"
+
 import SideBar from './component/layout/SideBar.vue'
 import NavBar from './component/layout/NavBar.vue'
 
+registerShortcut()
 </script>
 
 <template>

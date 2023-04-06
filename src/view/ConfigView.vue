@@ -1,46 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
-import { registerShortcut } from "../util/register_global_shortcut"
+import { PlaySound } from "../util/piano"
 
-registerShortcut()
-const canvas = ref<HTMLCanvasElement | null>(null)
-
-onMounted(() => {
-    if (!canvas.value) {
-        console.error(new Error("Canvas is null"))
-        return
-    }
-
-    canvas.value.width = 1366
-    canvas.value.height = 768
-    canvas.value.style.backgroundColor = "#222"
-
-    const ctx = canvas.value.getContext('2d')
-    if (!ctx) {
-        console.error(new Error("Context is null"))
-        return
-    }
-
-    const img = document.createElement('img')
-    img.src = "/screenshot.png"
-
-    img.onload = () => {
-        if (!canvas.value) return
-
-        ctx.drawImage(img, 0, 0, canvas.value.width, canvas.value.height)
-    }
-})
 </script>
 
 <template>
-    <canvas ref="canvas"></canvas>
+    <button @click="PlaySound('C', 4)">C4</button>
+    <button @click="PlaySound('D', 4)">D4</button>
+    <button @click="PlaySound('E', 4)">E4</button>
+    <button @click="PlaySound('F', 4)">F4</button>
+    <button @click="PlaySound('G', 4)">G4</button>
+    <button @click="PlaySound('A', 4)">A4</button>
+    <button @click="PlaySound('B', 4)">B4</button>
 </template>
 
 <style scoped lang="scss">
-canvas {
-    max-width: 100%;
-    max-height: 100%;
-    width: 100%;
-    height: auto;
-}
+
 </style>

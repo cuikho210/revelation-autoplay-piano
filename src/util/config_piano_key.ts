@@ -1,4 +1,4 @@
-import { currentMonitor, appWindow } from '@tauri-apps/api/window'
+import { appWindow } from '@tauri-apps/api/window'
 
 // Tinh truc x
 // Le ngoai cua dan: 0.6% moi ben
@@ -11,33 +11,33 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     let default_y_position = 89
     let default_y_position_hash = 78
 
-    let octa1 = {
+    let octa1: Piano.Octaves = {
         "C": { x: 0, y: 0 },
-        "C#": { x: 0, y: 0 },
+        "Db": { x: 0, y: 0 },
         "D": { x: 0, y: 0 },
-        "D#": { x: 0, y: 0 },
+        "Eb": { x: 0, y: 0 },
         "E": { x: 0, y: 0 },
         "F": { x: 0, y: 0 },
-        "F#": { x: 0, y: 0 },
+        "Gb": { x: 0, y: 0 },
         "G": { x: 0, y: 0 },
-        "G#": { x: 0, y: 0 },
+        "Ab": { x: 0, y: 0 },
         "A": { x: 0, y: 0 },
-        "A#": { x: 0, y: 0 },
+        "Bb": { x: 0, y: 0 },
         "B": { x: 0, y: 0 }
     }
 
-    let octa2 = {
+    let octa2: Piano.Octaves = {
         "C": { x: 0, y: 0 },
-        "C#": { x: 0, y: 0 },
+        "Db": { x: 0, y: 0 },
         "D": { x: 0, y: 0 },
-        "D#": { x: 0, y: 0 },
+        "Eb": { x: 0, y: 0 },
         "E": { x: 0, y: 0 },
         "F": { x: 0, y: 0 },
-        "F#": { x: 0, y: 0 },
+        "Gb": { x: 0, y: 0 },
         "G": { x: 0, y: 0 },
-        "G#": { x: 0, y: 0 },
+        "Ab": { x: 0, y: 0 },
         "A": { x: 0, y: 0 },
-        "A#": { x: 0, y: 0 },
+        "Bb": { x: 0, y: 0 },
         "B": { x: 0, y: 0 }
     }
 
@@ -75,7 +75,7 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     }
 
     function addKey(octa: Piano.Octaves, key: string) {
-        if (key.includes("#")) {
+        if (key.includes("b")) {
             octa[key as keyof Piano.Octaves].x = octa[pre_white_key as keyof Piano.Octaves].x + (size / 2)
             octa[key as keyof Piano.Octaves].y = default_y_position_hash
         } else {
@@ -88,7 +88,7 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     }
 }
 
-export async function generateAbsolutePianoKeys() {
+export async function GenerateAbsolutePianoKeys(): Promise<Piano.Piano24Key> {
     const size = await appWindow.innerSize()
     const position = await appWindow.innerPosition()
 
@@ -104,4 +104,6 @@ export async function generateAbsolutePianoKeys() {
             piano_key.y = (piano_key.y * size.height / 100) + position.y
         }
     }
+
+    return piano
 }
