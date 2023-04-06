@@ -39,6 +39,8 @@ const useLayoutStore = defineStore("layout", {
 
             if (default_theme == "light" || default_theme == "dark") {
                 this.theme_mode = default_theme
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                this.theme_mode == "dark"
             }
 
             this.setTheme()

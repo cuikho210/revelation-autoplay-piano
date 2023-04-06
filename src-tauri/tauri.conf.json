@@ -31,7 +31,12 @@
         "unmaximize": true,
         "unminimize": true,
         "startDragging": true,
-        "setTitle": true
+        "setTitle": true,
+        "create": true
+      },
+
+      "globalShortcut": {
+        "all": true
       }
     },
     "bundle": {

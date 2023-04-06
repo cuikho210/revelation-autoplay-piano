@@ -12,7 +12,9 @@ import NavBar from './component/layout/NavBar.vue'
 
 		<router-view v-slot="{ Component }">
             <Transition name="fade-in-fast" mode="out-in">
-				<component :is="Component"></component>
+				<!-- <div> -->
+					<component :is="Component"></component>
+				<!-- </div> -->
             </Transition>
         </router-view>
 	</main>
