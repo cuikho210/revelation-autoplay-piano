@@ -24,6 +24,7 @@ fn main() {
             }
 
             let resource_path = app.path_resolver();
+            println!("Start application!");
 
             app.listen_global("play_piano_note", move |event| {
                 let note: String = event.payload().unwrap().replace("\"", "");
