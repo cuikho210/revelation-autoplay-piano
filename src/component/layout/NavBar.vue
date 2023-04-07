@@ -42,6 +42,7 @@ section {
     justify-content: space-between;
     transition: background-color $transition-time;
     user-select: none;
+    z-index: 20;
 
     .btn {
         cursor: pointer;

@@ -6,21 +6,50 @@ const prop = defineProps<{
 </script>
 
 <template>
-<button :type="type">
-    <span class="material-icons-round">{{ icon }}</span>
-    <slot></slot>
-</button>
+<div>
+    <button :type="type">
+        <span class="material-icons-round">{{ icon }}</span>
+        <slot></slot>
+    </button>
+</div>
 </template>
 
 <style scoped lang="scss">
 @import "../../asset/scss/config.scss";
 
-button {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: .4rem;
-    background-color: $color-primary-1;
-    color: #fff;
+div {
+    display: inline-block;
+    margin: .4rem auto;
+    
+    button {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: .4rem;
+        background-color: $color-primary-1;
+        color: #fff;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        box-shadow: 4px 4px 7px rgba(var(--color-text-primary--rgb), 0.04);
+        transition:
+            background-color $transition-time,
+            box-shadow $transition-time;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $color-primary-2;
+            box-shadow: 4px 4px 7px rgba(var(--color-text-primary--rgb), 0.07);
+        }
+
+        &:active {
+            top: 1px;
+        }
+
+        .material-icons-round {
+            margin-right: .3rem;
+        }
+    }
 }
 </style>
