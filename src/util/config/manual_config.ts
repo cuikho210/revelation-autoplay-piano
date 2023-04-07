@@ -1,0 +1,1 @@
+document.body.innerText = "Manual Config"
