@@ -15,14 +15,24 @@ mod piano;
 // }
  
 fn main() {
-    #[cfg(any(windows, target_os = "macos"))]
-    window_shadows::set_shadow(&window, true).unwrap();
-
     tauri::Builder::default()
         .setup(|app| {
+            #[cfg(any(windows, target_os = "macos"))]
+            {
+                let window = app.get_window("main").unwrap();
+                window_shadows::set_shadow(&window, true).unwrap();
+            }
+
+            let resource_path = app.path_resolver();
+
             app.listen_global("play_piano_note", move |event| {
                 let note: String = event.payload().unwrap().replace("\"", "");
-                piano::play(note);
+
+                let note_path = resource_path
+                    .resolve_resource(format!("./piano_key/{}.mp3", note))
+                    .expect("failed to resolve resource dir");
+            
+                piano::play(note_path.to_path_buf());
             });
 
             Ok(())

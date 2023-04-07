@@ -37,6 +37,10 @@
 
       "globalShortcut": {
         "all": true
+      },
+
+      "fs": {
+        "scope": ["$RESOURCE/*"]
       }
     },
     "bundle": {
@@ -49,7 +53,10 @@
         "icons/icon.ico"
       ],
       "identifier": "io.github.cuikho210",
-      "targets": "all"
+      "targets": "all",
+      "resources": [
+        "./piano_key"
+      ]
     },
     "security": {
       "csp": null
