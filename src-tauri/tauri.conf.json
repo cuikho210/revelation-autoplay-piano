@@ -42,7 +42,7 @@
       },
 
       "fs": {
-        "scope": ["$RESOURCE/*", "$CONFIG/*"],
+        "scope": ["$RESOURCE/*", "$CONFIG/*", "$APPCONFIG/*"],
         "writeFile": true,
         "exists": true,
         "readFile": true
@@ -62,6 +62,10 @@
         "exit": true,
         "relaunch": false,
         "relaunchDangerousAllowSymlinkMacos": false
+      },
+
+      "path": {
+        "all": true
       }
     },
     "bundle": {

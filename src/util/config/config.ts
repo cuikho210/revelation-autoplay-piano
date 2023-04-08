@@ -14,7 +14,7 @@ export function CreateBackgroundConfigWindow(): Promise<WebviewWindow> {
 
     return new Promise((resolve, reject) => {
         webview.once("tauri://created", () => {
-            // webview.setIgnoreCursorEvents(true)
+            webview.setIgnoreCursorEvents(true)
             webview.maximize()
             webview.setResizable(false)
 

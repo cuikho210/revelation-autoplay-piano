@@ -6,7 +6,7 @@ use std::fs;
 
 const FILE_CONFIG_PIANO_KEY: &str = "config_piano_key.json";
 
-pub fn play(note_path: PathBuf) {
+fn play(note_path: PathBuf) {
     thread::spawn(move || {
         let (_stream, stream_handler) = OutputStream::try_default().unwrap();
         let sink = Sink::try_new(&stream_handler).unwrap();

@@ -1,4 +1,5 @@
-import { WebviewWindow } from "@tauri-apps/api/window"
+import { appConfigDir, resolve } from "@tauri-apps/api/path"
+import { readTextFile } from "@tauri-apps/api/fs"
 import type { PhysicalSize, PhysicalPosition } from "@tauri-apps/api/window"
 
 // Tinh truc x
@@ -9,8 +10,8 @@ import type { PhysicalSize, PhysicalPosition } from "@tauri-apps/api/window"
 // Phim trang 2 tro di: Phim trang 1 + 6.59%
 
 function generateRelativePianoKeys(): Piano.Piano24Key {
-    let default_y_position = 89
-    let default_y_position_hash = 78
+    let default_y_position_white = 89
+    let default_y_position_black = 78
 
     let octa1: Piano.Octaves = {
         "C": { x: 0, y: 0 },
@@ -49,7 +50,7 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     for (let key in octa1) {
         if (i == 0) {
             octa1["C"].x = 0.6 + (size / 2)
-            octa1["C"].y = default_y_position
+            octa1["C"].y = default_y_position_white
             i++
             continue
         }
@@ -62,7 +63,7 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     for (let key in octa2) {
         if (i == 0) {
             octa2["C"].x = octa1["B"].x + size
-            octa2["C"].y = default_y_position
+            octa2["C"].y = default_y_position_white
             pre_white_key = "C"
             i++
             continue
@@ -78,10 +79,10 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     function addKey(octa: Piano.Octaves, key: string) {
         if (key.includes("b")) {
             octa[key as keyof Piano.Octaves].x = octa[pre_white_key as keyof Piano.Octaves].x + (size / 2)
-            octa[key as keyof Piano.Octaves].y = default_y_position_hash
+            octa[key as keyof Piano.Octaves].y = default_y_position_black
         } else {
             octa[key as keyof Piano.Octaves].x = octa[pre_white_key as keyof Piano.Octaves].x + size
-            octa[key as keyof Piano.Octaves].y = default_y_position
+            octa[key as keyof Piano.Octaves].y = default_y_position_white
             pre_white_key = key
         }
 
@@ -107,4 +108,14 @@ export function GenerateAbsolutePianoKeys(
     }
 
     return piano
+}
+
+export async function GetPianoConfig(): Promise<Piano.Piano24Key> {
+    let piano_config_file = await appConfigDir()
+    piano_config_file = await resolve(piano_config_file, "config_piano_key.json")
+
+    let config_in_text = await readTextFile(piano_config_file)
+    let config: Piano.Piano24Key = JSON.parse(config_in_text)
+
+    return config
 }
