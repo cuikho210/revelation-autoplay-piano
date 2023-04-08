@@ -15,11 +15,29 @@ const router = createRouter({
         },
 
         {
-            name: "config",
-            path: "/config",
-            component: () => import("../view/ConfigView.vue"),
+            name: "add-music",
+            path: "/add-music",
+            component: () => import("../view/AddMusicView.vue"),
             meta: {
-                title: "Cấu Hình"
+                title: "Thêm Nhạc"
+            }
+        },
+
+        {
+            name: "music",
+            path: "/music",
+            component: () => import("../view/ListMusicView.vue"),
+            meta: {
+                title: "Danh Sách Nhạc"
+            }
+        },
+
+        {
+            name: "setting",
+            path: "/setting",
+            component: () => import("../view/SettingView.vue"),
+            meta: {
+                title: "Cài Đặt"
             }
         },
 

@@ -1,0 +1,22 @@
+.container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: .7rem;
+    box-sizing: border-box;
+}
+
+.container-xs {
+    @extend .container;
+    max-width: 540px;
+}
+
+.container-sm {
+    @extend .container;
+    max-width: 960px;
+}
+
+.container-md {
+    @extend .container;
+    max-width: 1320px;
+}

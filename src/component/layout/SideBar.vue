@@ -32,7 +32,6 @@ let layoutStore = useLayoutStore()
         <main>
             <div>
                 <SidebarButton icon="home" href="/">Trang Chủ</SidebarButton>
-                <SidebarButton icon="build" href="/config">Cấu Hình</SidebarButton>
                 <SidebarButton icon="piano" href="/add-music">Thêm Nhạc</SidebarButton>
                 <SidebarButton icon="piano" href="/music">Danh Sách Nhạc</SidebarButton>
                 <SidebarButton icon="settings" href="/setting">Cài Đặt</SidebarButton>
