@@ -1,4 +1,5 @@
-import { appWindow } from '@tauri-apps/api/window'
+import { WebviewWindow } from "@tauri-apps/api/window"
+import type { PhysicalSize, PhysicalPosition } from "@tauri-apps/api/window"
 
 // Tinh truc x
 // Le ngoai cua dan: 0.6% moi ben
@@ -88,10 +89,10 @@ function generateRelativePianoKeys(): Piano.Piano24Key {
     }
 }
 
-export async function GenerateAbsolutePianoKeys(): Promise<Piano.Piano24Key> {
-    const size = await appWindow.innerSize()
-    const position = await appWindow.innerPosition()
-
+export function GenerateAbsolutePianoKeys(
+    window_size: PhysicalSize,
+    window_position: PhysicalPosition
+): Piano.Piano24Key {
     const piano = generateRelativePianoKeys()
 
     for (let key_octa in piano) {
@@ -100,8 +101,8 @@ export async function GenerateAbsolutePianoKeys(): Promise<Piano.Piano24Key> {
         for (let key in octa) {
             let piano_key: Position = octa[key as keyof Piano.Octaves]
 
-            piano_key.x = (piano_key.x * size.width / 100) + position.x
-            piano_key.y = (piano_key.y * size.height / 100) + position.y
+            piano_key.x = (piano_key.x * window_size.width / 100) + window_position.x
+            piano_key.y = (piano_key.y * window_size.height / 100) + window_position.y
         }
     }
 

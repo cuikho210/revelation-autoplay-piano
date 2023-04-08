@@ -32,7 +32,9 @@
         "unminimize": true,
         "startDragging": true,
         "setTitle": true,
-        "create": true
+        "create": true,
+        "setIgnoreCursorEvents": true,
+        "setResizable": true
       },
 
       "globalShortcut": {
@@ -40,7 +42,26 @@
       },
 
       "fs": {
-        "scope": ["$RESOURCE/*"]
+        "scope": ["$RESOURCE/*", "$CONFIG/*"],
+        "writeFile": true,
+        "exists": true,
+        "readFile": true
+      },
+
+      "dialog": {
+        "all": false,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": false,
+        "save": false
+      },
+
+      "process": {
+        "all": false,
+        "exit": true,
+        "relaunch": false,
+        "relaunchDangerousAllowSymlinkMacos": false
       }
     },
     "bundle": {
@@ -52,7 +73,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "io.github.cuikho210",
+      "identifier": "revelation-autoplay-piano",
       "targets": "all",
       "resources": [
         "./piano_key"

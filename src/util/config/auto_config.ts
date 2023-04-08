@@ -1,1 +1,0 @@
-document.body.innerText = "Auto Config"

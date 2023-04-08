@@ -1,6 +1,10 @@
 use std::{thread, path::PathBuf, fs::File};
 use std::io::BufReader;
 use rodio::{Decoder, OutputStream, Sink};
+use tauri::Manager;
+use std::fs;
+
+const FILE_CONFIG_PIANO_KEY: &str = "config_piano_key.json";
 
 pub fn play(note_path: PathBuf) {
     thread::spawn(move || {
@@ -12,5 +16,36 @@ pub fn play(note_path: PathBuf) {
 
         sink.append(source);
         sink.sleep_until_end();
+    });
+}
+
+pub fn listen_piano_save(app: &mut tauri::App) {
+    let handle = app.handle();
+    let resource_path = app.path_resolver();
+
+    let mut path_config_file = resource_path.app_config_dir().unwrap();
+    fs::create_dir_all(&path_config_file).unwrap();
+
+    path_config_file.push(FILE_CONFIG_PIANO_KEY);
+
+    app.listen_global("piano_save", move |event| {
+        let piano_data = event.payload().unwrap();
+
+        handle.emit_all("piano_draw", piano_data).unwrap();
+        fs::write(&path_config_file, piano_data).unwrap();
+    });
+}
+
+pub fn listen_piano_play_note(app: &mut tauri::App) {
+    let resource_path = app.path_resolver();
+
+    app.listen_global("piano_play_note", move |event| {
+        let note: String = event.payload().unwrap().replace("\"", "");
+
+        let note_path = resource_path
+            .resolve_resource(format!("./piano_key/{}.mp3", note))
+            .expect("failed to resolve resource dir");
+    
+        play(note_path.to_path_buf());
     });
 }

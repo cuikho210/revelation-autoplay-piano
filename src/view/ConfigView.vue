@@ -6,8 +6,8 @@ import PrimaryButton from "../component/button/PrimaryButton.vue"
 </script>
 
 <template>
-    <PrimaryButton icon="settings" @click="InitConfigWindow('auto_config')">
-        Tự động cấu hình
+    <PrimaryButton icon="settings" @click="InitConfigWindow()">
+        Bắt đầu cấu hình
     </PrimaryButton>
 
     <HorizontalPiano :octaves_start="4" :octaves_length="2" />

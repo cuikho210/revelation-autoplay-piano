@@ -1,0 +1,63 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    padding: .5rem;
+    font-size: 14px;
+    pointer-events: all;
+}
+
+.control {
+    position: relative;
+    display: block;
+    margin: .5rem auto;
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.control .title {
+    display: block;
+    margin-top: -.7rem;
+    margin-bottom: .4rem;
+    text-align: center;
+}
+
+.control div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.control div > span {
+    min-width: 4rem;
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    position: relative;
+    pointer-events: all;
+    outline: none;
+    border: none;
+    padding: .4rem;
+    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.07);
+    cursor: pointer;
+    background-color: #ff907f;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.btn:active {
+    top: 1px;
+}

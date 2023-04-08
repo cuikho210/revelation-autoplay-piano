@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Config</title>
+    <script type="module" src="/src/util/config/auto_config_controller.ts" async defer></script>
+    <link rel="stylesheet" href="./auto_config_controller.css">
+</head>
+<body data-tauri-drag-region>
+    <p>Bật chế độ đàn 25 phím trong Thiên Dụ, sau đó căn chỉnh các chấm trên màn hình khớp với vị trí của 24 phím đàn đầu tiên.</p>
+
+    <section>
+        <div class="control">
+            <span class="title">Trục X</span>
+            
+            <div>
+                <button class="btn" id="btn_decre_x_10">Giảm 10</button>
+                <button class="btn" id="btn_decre_x_1">Giảm 1</button>
+                <span id="log_x">0</span>
+                <button class="btn" id="btn_incre_x_1">Tăng 1</button>
+                <button class="btn" id="btn_incre_x_10">Tăng 10</button>
+            </div>
+        </div>
+
+        <div class="control">
+            <span class="title">Trục Y</span>
+            
+            <div>
+                <button class="btn" id="btn_decre_y_10">Giảm 10</button>
+                <button class="btn" id="btn_decre_y_1">Giảm 1</button>
+                <span id="log_y">0</span>
+                <button class="btn" id="btn_incre_y_1">Tăng 1</button>
+                <button class="btn" id="btn_incre_y_10">Tăng 10</button>
+            </div>
+        </div>
+
+        <div class="control">
+            <span class="title">Chiều rộng</span>
+            
+            <div>
+                <button class="btn" id="btn_decre_width_10">Giảm 10</button>
+                <button class="btn" id="btn_decre_width_1">Giảm 1</button>
+                <span id="log_width">0</span>
+                <button class="btn" id="btn_incre_width_1">Tăng 1</button>
+                <button class="btn" id="btn_incre_width_10">Tăng 10</button>
+            </div>
+        </div>
+
+        <div class="control">
+            <span class="title">Chiều cao</span>
+
+            <div>
+                <button class="btn" id="btn_decre_height_10">Giảm 10</button>
+                <button class="btn" id="btn_decre_height_1">Giảm 1</button>
+                <span id="log_height">0</span>
+                <button class="btn" id="btn_incre_height_1">Tăng 1</button>
+                <button class="btn" id="btn_incre_height_10">Tăng 10</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

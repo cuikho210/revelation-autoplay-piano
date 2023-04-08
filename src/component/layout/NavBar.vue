@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { appWindow } from '@tauri-apps/api/window'
+import { exit } from "@tauri-apps/api/process"
 import { useRouter } from "vue-router"
 import useLayoutStore from "../../store/layout.store"
 
@@ -22,7 +23,7 @@ let layoutStore = useLayoutStore()
         </span>
 
         <span @click="appWindow.minimize()" class="btn btn-minimize material-icons-round" title="Minimize">remove</span>
-        <span @click="appWindow.close()" class="btn btn-close material-icons-round" title="Close">close</span>
+        <span @click="exit()" class="btn btn-close material-icons-round" title="Close">close</span>
     </div>
 </section>
 </template>

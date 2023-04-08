@@ -1,17 +1,58 @@
 import { WebviewWindow } from "@tauri-apps/api/window"
 
-export function InitConfigWindow(name: "auto_config" | "manual_config"): WebviewWindow {
-    const webview = new WebviewWindow(name, {
-        url: "/config/" + name + ".html"
+export function CreateBackgroundConfigWindow(): Promise<WebviewWindow> {
+    let name = "auto_config_background"
+
+    let webview = new WebviewWindow(name, {
+        url: "/config/" + name + ".html",
+        title: name,
+        transparent: true,
+        alwaysOnTop: true,
+        decorations: false,
+        skipTaskbar: true
     })
 
-    webview.once("tauri://created", () => {
+    return new Promise((resolve, reject) => {
+        webview.once("tauri://created", () => {
+            // webview.setIgnoreCursorEvents(true)
+            webview.maximize()
+            webview.setResizable(false)
 
+            resolve(webview)
+        })
+
+        webview.once("tauri://error", (e) => {
+            reject(e)
+        })
+    })
+}
+
+export function CreateControllerConfigWindow(): Promise<WebviewWindow> {
+    let webview = new WebviewWindow("auto_config_controller", {
+        url: "/config/auto_config_controller.html",
+        title: "Bảng Điều Khiển - Cấu Hình Phím Piano",
+        alwaysOnTop: true,
+        resizable: false,
+        width: 360,
+        height: 360
     })
 
-    webview.once("tauri://error", (e) => {
-        console.error(e)
-    })
+    return new Promise((resolve, reject) => {
+        webview.once("tauri://created", () => {
+            resolve(webview)
+        })
 
-    return webview
+        webview.once("tauri://error", (e) => {
+            reject(e)
+        })
+    })
+}
+
+export async function InitConfigWindow() {
+    let background_window = await CreateBackgroundConfigWindow()
+    let controller_window = await CreateControllerConfigWindow()
+
+    controller_window.onCloseRequested(async () => {
+        await background_window.close()
+    })
 }
