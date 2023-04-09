@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import autoprefixer from 'autoprefixer';
+import { resolve } from "path";
 
 const mobile =
   process.env.TAURI_PLATFORM === "android" ||
@@ -36,5 +37,14 @@ export default defineConfig(async () => ({
     minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
+
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        auto_config_background: resolve(__dirname, 'pages/config/auto_config_background.html'),
+        auto_config_controller: resolve(__dirname, 'pages/config/auto_config_controller.html'),
+        play_music_background: resolve(__dirname, 'pages/play_music/play_music_background.html'),
+      },
+    },
   },
 }));

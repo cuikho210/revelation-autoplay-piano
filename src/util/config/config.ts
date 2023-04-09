@@ -4,7 +4,7 @@ export function CreateBackgroundConfigWindow(): Promise<WebviewWindow> {
     let name = "auto_config_background"
 
     let webview = new WebviewWindow(name, {
-        url: "/config/" + name + ".html",
+        url: "/pages/config/" + name + ".html",
         title: name,
         transparent: true,
         alwaysOnTop: true,
@@ -29,7 +29,7 @@ export function CreateBackgroundConfigWindow(): Promise<WebviewWindow> {
 
 export function CreateControllerConfigWindow(): Promise<WebviewWindow> {
     let webview = new WebviewWindow("auto_config_controller", {
-        url: "/config/auto_config_controller.html",
+        url: "/pages/config/auto_config_controller.html",
         title: "Bảng Điều Khiển - Cấu Hình Phím Piano",
         alwaysOnTop: true,
         resizable: false,

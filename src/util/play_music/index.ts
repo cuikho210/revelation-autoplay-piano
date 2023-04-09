@@ -2,7 +2,7 @@ import { WebviewWindow } from "@tauri-apps/api/window"
 
 export function CreateBackgroundMusicWindow(): Promise<WebviewWindow> {
     let webview = new WebviewWindow("play_music_background", {
-        url: "/play_music/play_music_background.html",
+        url: "/pages/play_music/play_music_background.html",
         title: "play_music_background",
         transparent: true,
         alwaysOnTop: true,
@@ -26,7 +26,7 @@ export function CreateBackgroundMusicWindow(): Promise<WebviewWindow> {
 
 export function CreateControllerMusicWindow(): Promise<WebviewWindow> {
     let webview = new WebviewWindow("auto_config_controller", {
-        url: "/play_music/play_music_controller.html",
+        url: "/pages/play_music/play_music_controller.html",
         title: "Tự Động Chơi Nhạc",
         alwaysOnTop: true,
         resizable: false,
