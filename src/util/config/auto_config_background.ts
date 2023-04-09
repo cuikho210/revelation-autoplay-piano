@@ -25,29 +25,17 @@ async function main() {
 
 function listenEventFromBackend(context: CustomContext) {
     listen<string>("piano_draw", event => {
-        let piano: Piano.Piano24Key = JSON.parse(event.payload)
+        let piano: Piano.Piano84Key = JSON.parse(event.payload)
         drawPiano(context, piano)
     })
 }
 
-function drawPiano(
-    context: CustomContext,
-    piano: Piano.Piano24Key
-): Piano.Piano24Key {
-
+function drawPiano(context: CustomContext, piano: Piano.Piano84Key) {
     context.ClearRect()
-    
-    for (let key_octa in piano) {
-        let octa = piano[key_octa as keyof Piano.Piano24Key]
 
-        for (let note in octa) {
-            let position = octa[note as keyof Piano.Octaves]
-
-            drawDot(context, position.x, position.y)
-        }
-    }
-
-    return piano
+    piano.forEach(piano_note => {
+        drawDot(context, piano_note.position.x, piano_note.position.y)
+    })
 }
 
 function get2DContext(bg_window_size: PhysicalSize): CustomContext {

@@ -19,8 +19,20 @@ namespace Piano {
         "B": Position
     }
 
-    interface Piano24Key {
-        "octa1": Octaves
-        "octa2": Octaves
+    interface Note {
+        key: keyof Octaves
+        octa: number
+        position: Position
+    }
+
+    type Piano84Key = Note[]
+}
+
+namespace Music {
+    type Beat = string[]
+
+    interface Music {
+        tempo: number
+        data: Beat[]
     }
 }
