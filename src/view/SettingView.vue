@@ -2,7 +2,63 @@
 import { InitConfigWindow } from "../util/config/config"
 import PrimaryButton from "../component/button/PrimaryButton.vue"
 import { InitMusicWindow } from "../util/play_music"
+import { GetPianoConfig } from "../util/config_piano_key"
+import { PianoPlayer } from "../util/piano"
 
+async function playMusic() {
+    let piano = await GetPianoConfig()
+
+    let music: Music.Music = {
+        tempo: 300,
+        data: [
+            ["C5"],
+            ["D5"],
+            ["E5"],
+            ["C5"],
+            ["G5"],
+            [], [],
+            ["E5"],
+            ["D5"],
+            [],
+            ["G5"],
+            [],
+            ["D5"],
+            [],
+            ["C5"],
+            ["A4"],
+            ["E5"],
+            [], [],
+            ["C5"],
+            ["B4"],
+            [], [], [],
+            ["G4"],
+            [],
+            ["A4"],
+            [],
+            ["B4"],
+            [],
+            ["C5"],
+            ["D5"],
+            ["G4"],
+            [],
+            ["C5"],
+            [],
+            ["D5"],
+            ["E5"],
+            ["F5"],
+            [],
+            ["F5"],
+            ["E5"],
+            ["D5"],
+            ["C5"],
+            ["D5"],
+        ]
+    }
+
+    let player = new PianoPlayer(piano, music)
+
+    setTimeout(() => player.Play(), 2000)
+}
 </script>
 
 <template>
@@ -24,7 +80,7 @@ import { InitMusicWindow } from "../util/play_music"
             Bắt đầu cấu hình
         </PrimaryButton>
 
-        <PrimaryButton icon="piano" @click="InitMusicWindow()">
+        <PrimaryButton icon="piano" @click="playMusic()">
             Test
         </PrimaryButton>
     </div>

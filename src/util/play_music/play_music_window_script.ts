@@ -6,15 +6,25 @@ async function main() {
     let piano = await GetPianoConfig()
 
     let music: Music.Music = {
-        tempo: 60,
+        tempo: 150,
         data: [
-            ["C4", "E4", "G4"],
+            ["C5"],
+            ["D5"],
+            ["E5"],
+            ["C5"],
+            ["G5"],
             [],
             [],
             ["E5"],
-            ["A5"],
-            ["B5"],
-            ["C6"]
+            ["D5"],
+            [],
+            ["G5"],
+            [],
+            ["D5"],
+            [],
+            ["C5"],
+            ["A4"],
+            ["E5"],
         ]
     }
 
