@@ -9,6 +9,10 @@ Bạn muốn cả Guild trầm trồ mỗi tối tiệc hồ bơi?
 Soạn bản nhạc yêu thích của bạn, mở game, ngồi vào đàn, nhấn phím tắt bắt đầu!  
 Mọi việc còn lại hãy để tool lo :smile:
 
+**Lưu ý**:  
+Hiện tool không hoạt động trên bản PC Client do game chặn sự kiện chuột, mình không biết sửa kiểu gì ^^  
+Hãy sử dụng tool trên giả lập thay vì sử dụng PC Client.  
+
 ## For Dev
 ### Requirements
 + Rust (rustc, cargo)
