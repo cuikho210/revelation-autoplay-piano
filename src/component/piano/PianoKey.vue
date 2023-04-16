@@ -25,7 +25,7 @@ let note_name = prop.note.key + prop.note.octa
 button {
     display: inline-block;
     width: 100px;
-    padding: .25rem;
+    height: 27px;
     border: 1px solid rgba(var(--color-text-primary--rgb), 0.04);
 
     &:active {

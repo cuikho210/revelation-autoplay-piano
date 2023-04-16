@@ -20,6 +20,7 @@ fn main() {
         .setup(|app| {
             #[cfg(any(windows, target_os = "macos"))]
             {
+                use tauri::Manager;
                 let window = app.get_window("main").unwrap();
                 window_shadows::set_shadow(&window, true).unwrap();
             }
