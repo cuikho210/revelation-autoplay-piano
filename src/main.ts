@@ -29,3 +29,7 @@ app.mount('#app')
 
 const layoutStore = useLayoutStore()
 layoutStore.setThemeToDefault()
+
+document.addEventListener("contextmenu", event => {
+    event.preventDefault()
+})

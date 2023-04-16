@@ -52,7 +52,7 @@ function tooglePlayMusic() {
     }
 }
 
-function saveMusic() {
+async function saveMusic() {
     let music: Music.Music = {
         tempo: tempo.value,
         data: []
@@ -62,7 +62,8 @@ function saveMusic() {
         music.data.push(music_beat.data)
     })
 
-    SaveMusic(music_name, music)
+    await SaveMusic(music_name, music)
+    alert("Saved!")
 }
 
 addBeat(32)

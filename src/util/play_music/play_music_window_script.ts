@@ -1,34 +1,22 @@
+import { listen } from "@tauri-apps/api/event"
 import { GetPianoConfig } from "../config_piano_key"
-import { PianoPlayer } from "../piano"
+import { PianoPlayer, GetMusicFromPath } from "../piano"
+import "../../asset/scss/play_music.scss"
 
 main()
 async function main() {
+    let path = new URLSearchParams(location.search).get("path")
+    if (!path) throw new Error("Path is null")
+    
     let piano = await GetPianoConfig()
-
-    let music: Music.Music = {
-        tempo: 150,
-        data: [
-            ["C5"],
-            ["D5"],
-            ["E5"],
-            ["C5"],
-            ["G5"],
-            [],
-            [],
-            ["E5"],
-            ["D5"],
-            [],
-            ["G5"],
-            [],
-            ["D5"],
-            [],
-            ["C5"],
-            ["A4"],
-            ["E5"],
-        ]
-    }
-
+    let music = await GetMusicFromPath(path)
     let player = new PianoPlayer(piano, music)
+    
+    document.getElementById("play_button")?.addEventListener("click", () => {
+        player.Play()
+    })
 
-    setTimeout(() => player.Play(), 3000)
+    await listen("toggle_play", () => {
+        player.TogglePlay()
+    })
 }

@@ -1,7 +1,16 @@
 import { emit } from '@tauri-apps/api/event'
 import { invoke } from "@tauri-apps/api/tauri"
 import { documentDir, resolve } from "@tauri-apps/api/path"
-import { writeTextFile, createDir, exists } from "@tauri-apps/api/fs"
+import { writeTextFile, createDir, exists, readDir, readTextFile } from "@tauri-apps/api/fs"
+import { WebviewWindow } from "@tauri-apps/api/window"
+import type { FileEntry } from '@tauri-apps/api/fs'
+
+async function getMusicDir(): Promise<string> {
+    let document_path = await documentDir()
+    let music_dir_path = await resolve(document_path, "Revelation_Musics")
+
+    return music_dir_path
+}
 
 export function GeneratePiano(octa_start: number, length: number): Piano.Note[] {
     let octa_template: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
@@ -42,7 +51,7 @@ export class PianoPlayer {
     constructor(piano: Piano.Piano84Key, music: Music.Music) {
         this.piano = piano
         this.music = music
-        this.time_loop = 60 / music.tempo * 1000
+        this.time_loop = 60000 / music.tempo
     }
 
     public Play() {
@@ -59,9 +68,18 @@ export class PianoPlayer {
         this.current_beat_index = 0
     }
 
+    public TogglePlay() {
+        if (this.is_playing) this.Stop()
+        else this.Play()
+    }
+
     private loop() {
         if (!this.is_playing) return
-        if (this.current_beat_index >= this.music.data.length) return
+        
+        if (this.current_beat_index >= this.music.data.length) {
+            this.is_playing = false
+            return
+        }
 
         this.music.data[this.current_beat_index].forEach(piano_key => {
             if (!piano_key) return
@@ -94,12 +112,39 @@ export class PianoPlayer {
 
 export async function SaveMusic(music_name: string, music: Music.Music) {
     let file_name = music_name.replaceAll(" ", "_") + ".json"
-    let document_path = await documentDir()
-    let music_dir_path = await resolve(document_path, "Revelation_Musics")
+    let music_dir_path = await getMusicDir()
     let music_file_path = await resolve(music_dir_path, file_name)
     
     let is_music_dir_exist = await exists(music_dir_path)
     if (!is_music_dir_exist) await createDir(music_dir_path)
 
     await writeTextFile(music_file_path, JSON.stringify(music))
+}
+
+export async function ListMusic(): Promise<FileEntry[]> {
+    let music_dir_path = await getMusicDir()
+
+    let is_music_dir_exist = await exists(music_dir_path)
+    if (!is_music_dir_exist) throw null
+
+    let entries = await readDir(music_dir_path)
+    return entries
+}
+
+export async function GetMusicFromPath(music_path: string): Promise<Music.Music> {
+    let content = await readTextFile(music_path)
+    let music: Music.Music = JSON.parse(content)
+
+    return music
+}
+
+export async function CreateMusicControlWindow(music_path: string) {
+    new WebviewWindow("play_music_controller", {
+        url: "/pages/play_music/play_music_controller.html?path=" + music_path,
+        title: "Play Music Controller",
+        alwaysOnTop: true,
+        resizable: false,
+        width: 240,
+        height: 240
+    })
 }

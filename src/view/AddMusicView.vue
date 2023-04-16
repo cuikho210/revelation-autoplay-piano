@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import HorizontalPianoRoll from '../component/piano/HorizontalPianoRoll.vue'
-
 </script>
 
 <template>

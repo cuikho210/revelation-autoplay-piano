@@ -43,7 +43,7 @@ export default defineConfig(async () => ({
         main: resolve(__dirname, 'index.html'),
         auto_config_background: resolve(__dirname, 'pages/config/auto_config_background.html'),
         auto_config_controller: resolve(__dirname, 'pages/config/auto_config_controller.html'),
-        play_music_background: resolve(__dirname, 'pages/play_music/play_music_background.html'),
+        play_music_controller: resolve(__dirname, 'pages/play_music/play_music_controller.html'),
       },
     },
   },

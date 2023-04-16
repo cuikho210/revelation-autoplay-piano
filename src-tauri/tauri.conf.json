@@ -46,7 +46,8 @@
         "writeFile": true,
         "exists": true,
         "readFile": true,
-        "createDir": true
+        "createDir": true,
+        "readDir": true
       },
 
       "dialog": {
