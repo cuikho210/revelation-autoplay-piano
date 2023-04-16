@@ -36,7 +36,7 @@ function updateBeat(note: string, is_active: boolean) {
 <style scoped lang="scss">
 div {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
 }
 
 .is-playing {

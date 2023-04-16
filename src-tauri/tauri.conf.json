@@ -42,10 +42,11 @@
       },
 
       "fs": {
-        "scope": ["$RESOURCE/*", "$CONFIG/*", "$APPCONFIG/*"],
+        "scope": ["$RESOURCE/*", "$CONFIG/*", "$APPCONFIG/*", "$DOCUMENT/**/*"],
         "writeFile": true,
         "exists": true,
-        "readFile": true
+        "readFile": true,
+        "createDir": true
       },
 
       "dialog": {

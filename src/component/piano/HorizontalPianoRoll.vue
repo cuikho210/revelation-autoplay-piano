@@ -1,37 +1,68 @@
 <script setup lang="ts">
-import { reactive } from "vue"
-import { GeneratePiano, PlaySound } from "../../util/piano"
+import { ref, reactive } from "vue"
+import { GeneratePiano, PlaySound, SaveMusic } from "../../util/piano"
 import PianoKey from './PianoKey.vue'
 import MusicBeat from "./MusicBeat.vue"
 import PrimaryInput from "../input/PrimaryInput.vue"
 import PrimaryButton from "../button/PrimaryButton.vue"
 
+interface MusicBeat {
+    is_playing: boolean
+    data: Music.Beat
+}
+
 let piano = GeneratePiano(1, 7)
 let music_name = "Music " + new Date().toDateString()
-
-let music = reactive<Music.Music>({
-    tempo: 120,
-    data: []
-})
+let music_data = reactive<MusicBeat[]>([])
+let is_playing = ref(false)
+let tempo = ref(120)
 
 function addBeat(length: number) {
     for (let i = 0; i < length; i ++) {
-        music.data.push([])
+        music_data.push({
+            is_playing: false,
+            data: []
+        })
     }
 }
 
-function playMusic(beat_index: number) {
-    if (beat_index >= music.data.length) return
+function loopPlayMusic(beat_index: number) {
+    if (beat_index >= music_data.length || !is_playing.value) {
+        music_data[beat_index - 1].is_playing = false
+        is_playing.value = false
+        return
+    }
 
-    music.data[beat_index].forEach(note => {
+    if (music_data[beat_index - 1]) music_data[beat_index - 1].is_playing = false
+    music_data[beat_index].is_playing = true
+
+    music_data[beat_index].data.forEach(note => {
         PlaySound(note)
     })
 
-    setTimeout(() => playMusic(++beat_index), 60000 / music.tempo)
+    setTimeout(() => loopPlayMusic(++beat_index), 60000 / tempo.value)
+}
+
+function tooglePlayMusic() {
+    if (is_playing.value) {
+        is_playing.value = false
+    } else {
+        is_playing.value = true
+        loopPlayMusic(0)
+    }
 }
 
 function saveMusic() {
+    let music: Music.Music = {
+        tempo: tempo.value,
+        data: []
+    }
 
+    music_data.forEach(music_beat => {
+        music.data.push(music_beat.data)
+    })
+
+    SaveMusic(music_name, music)
 }
 
 addBeat(32)
@@ -53,13 +84,13 @@ addBeat(32)
             type="number"
             icon="music_note"
             placeholder="Tempo"
-            width="140px"
-            v-model="music.tempo"
+            width="170px"
+            v-model="tempo"
         />
 
         <PrimaryButton class="btn" icon="add" @click="addBeat(8)">Add 8 beat</PrimaryButton>
-        <PrimaryButton class="btn" icon="play_arrow" @click="playMusic(0)">Play</PrimaryButton>
-        <PrimaryButton class="btn" icon="save">Save</PrimaryButton>
+        <PrimaryButton class="btn" :icon="is_playing ? 'stop' : 'play_arrow'" @click="tooglePlayMusic">{{ is_playing ? "Stop" : "Play" }}</PrimaryButton>
+        <PrimaryButton class="btn" icon="save" @click="saveMusic">Save</PrimaryButton>
     </div>
 
     <div class="piano-roll">
@@ -70,8 +101,8 @@ addBeat(32)
         </div>
 
         <div class="roll">
-            <div v-for="(_, index) in music.data" :key="index">
-                <MusicBeat :piano="piano" v-model="music.data[index]" />
+            <div v-for="(_, index) in music_data" :key="index">
+                <MusicBeat :piano="piano" :is_playing="music_data[index].is_playing" v-model="music_data[index].data" />
             </div>
         </div>
     </div>
@@ -105,6 +136,12 @@ addBeat(32)
 .piano-roll {
     position: relative;
     display: flex;
+
+    .piano {
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: flex-end;
+    }
 
     .roll {
         overflow: scroll;

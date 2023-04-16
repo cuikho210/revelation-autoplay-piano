@@ -1,5 +1,7 @@
 import { emit } from '@tauri-apps/api/event'
 import { invoke } from "@tauri-apps/api/tauri"
+import { documentDir, resolve } from "@tauri-apps/api/path"
+import { writeTextFile, createDir, exists } from "@tauri-apps/api/fs"
 
 export function GeneratePiano(octa_start: number, length: number): Piano.Note[] {
     let octa_template: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
@@ -88,4 +90,16 @@ export class PianoPlayer {
 
         setTimeout(() => this.loop(), this.time_loop)
     }
+}
+
+export async function SaveMusic(music_name: string, music: Music.Music) {
+    let file_name = music_name.replaceAll(" ", "_") + ".json"
+    let document_path = await documentDir()
+    let music_dir_path = await resolve(document_path, "Revelation_Musics")
+    let music_file_path = await resolve(music_dir_path, file_name)
+    
+    let is_music_dir_exist = await exists(music_dir_path)
+    if (!is_music_dir_exist) await createDir(music_dir_path)
+
+    await writeTextFile(music_file_path, JSON.stringify(music))
 }
