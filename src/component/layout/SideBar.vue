@@ -71,7 +71,6 @@ let layoutStore = useLayoutStore()
     background-color: var(--color-bg-primary);
     border-right: 1px solid rgba(var(--color-text-primary--rgb), 0.05);
     user-select: none;
-    transition: background-color $transition-time;
     z-index: 31;
     transition:
         visibility $transition-time ease-out,
@@ -85,11 +84,9 @@ let layoutStore = useLayoutStore()
             text-align: center;
             padding: .25rem;
             padding-bottom: 1rem;
-            // border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.05);
 
             .material-icons-round {
                 background-color: $color-primary-1;
-                // color: #fff;
                 padding: .5rem;
                 border-radius: 50%;
                 font-size: 32px;
@@ -106,10 +103,12 @@ let layoutStore = useLayoutStore()
 
             p {
                 color: rgba(var(--color-text-primary--rgb), 0.7);
+                transition: color $transition-time;
             }
 
             small {
                 color: rgba(var(--color-text-primary--rgb), 0.4);
+                transition: color $transition-time;
             }
         }
     }

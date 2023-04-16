@@ -2,30 +2,28 @@
 import { PlaySound } from '../../util/piano'
 
 const prop = defineProps<{
-    note: string
-    x?: number
-    y?: number,
+    note: Piano.Note
     width?: string
 }>()
 
-let is_sub_key = prop.note.includes('b')
+let is_sub_key = prop.note.key.includes('b')
+let note_name = prop.note.key + prop.note.octa
 
 </script>
 
 <template>
-    <button @click="PlaySound(note)" :style="{
+    <button @click="PlaySound(note_name)" :style="{
         backgroundColor: is_sub_key ? '#2f2f2f' : '#fefefe',
         color: is_sub_key ? '#fff' : '#000',
         width: width || '100px'
     }">
-        {{ note }} {{ (x && y) ? " - " + x + ", " + y : "" }}
+        {{ note_name  }}
     </button>
 </template>
 
 <style scoped lang="scss">
 button {
-    user-select: none;
-    display: block;
+    display: inline-block;
     width: 100px;
     padding: .25rem;
     border: 1px solid rgba(var(--color-text-primary--rgb), 0.04);

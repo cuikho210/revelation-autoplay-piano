@@ -1,3 +1,7 @@
 <template>
-    List Music
+    
 </template>
+
+<style scoped lang="scss">
+
+</style>

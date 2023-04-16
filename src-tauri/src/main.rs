@@ -4,7 +4,6 @@
 mod piano;
 
 use std::{thread, time};
-use tauri::Manager;
 use enigo::{Enigo, MouseControllable, MouseButton};
 
 #[tauri::command]

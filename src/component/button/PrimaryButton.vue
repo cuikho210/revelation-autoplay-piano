@@ -27,6 +27,7 @@ div {
         justify-content: flex-start;
         align-items: center;
         padding: .4rem;
+        padding-right: .7rem;
         background-color: $color-primary-1;
         color: #fff;
         border: none;
@@ -37,6 +38,7 @@ div {
             background-color $transition-time,
             box-shadow $transition-time;
         cursor: pointer;
+        white-space: nowrap;
 
         &:hover {
             background-color: $color-primary-2;

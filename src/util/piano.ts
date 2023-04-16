@@ -1,6 +1,27 @@
 import { emit } from '@tauri-apps/api/event'
 import { invoke } from "@tauri-apps/api/tauri"
 
+export function GeneratePiano(octa_start: number, length: number): Piano.Note[] {
+    let octa_template: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
+    let piano: Piano.Note[] = []
+
+    for (let i = octa_start; i < octa_start + length; i++) {
+        let octa: Piano.Note[] = []
+        
+        octa_template.forEach(note => {
+            octa.push({
+                octa: i,
+                key: note,
+                position: {x: 0, y: 0}
+            })
+        })
+
+        piano.push(...octa)
+    }
+
+    return piano
+}
+
 export async function PlaySound(key: string) {
     await emit("piano_play_note", key)
 }
@@ -41,6 +62,8 @@ export class PianoPlayer {
         if (this.current_beat_index >= this.music.data.length) return
 
         this.music.data[this.current_beat_index].forEach(piano_key => {
+            if (!piano_key) return
+
             let octa: number
             let key_name: keyof Piano.Octaves
 
