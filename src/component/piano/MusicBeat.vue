@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue"
 import MusicNote from "./MusicNote.vue"
 
 interface Beat {
@@ -9,12 +10,24 @@ const prop = defineProps<{
     piano: Piano.Note[]
     modelValue?: Music.Beat
     is_playing?: boolean
+    index: number
 }>()
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue", "update:selectCurrentPlaying"])
 let music_beat: Beat = {}
+let beat_el = ref<HTMLDivElement>()
 
-loadData()
+onMounted(() => {
+    loadData()
+
+    if (beat_el.value) {
+        beat_el.value.addEventListener("contextmenu", event => {
+            event.preventDefault()
+            emit("update:selectCurrentPlaying", prop.index)
+        })
+    }
+})
+
 function loadData() {
     if (!prop.modelValue) return
 
@@ -38,7 +51,7 @@ function updateBeat(note: string, is_active: boolean) {
 </script>
 
 <template>
-<div :class="{ 'is-playing': is_playing }">
+<div ref="beat_el" :class="{ 'is-playing': is_playing }">
     <div v-for="(note, index) of piano" :key="index">
         <MusicNote
             :is_active="music_beat[note.key + note.octa]"

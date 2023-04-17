@@ -19,6 +19,7 @@ let music_data = reactive<MusicBeat[]>([])
 let is_playing = ref(false)
 let tempo = ref(120)
 let is_loaded = ref(false)
+let current_playing_beat = 0
 
 if (route.query.path && typeof route.query.path == "string") {
     loadDataFromPath(route.query.path)
@@ -54,21 +55,22 @@ function addBeat(length: number) {
     }
 }
 
-function loopPlayMusic(beat_index: number) {
-    if (beat_index >= music_data.length || !is_playing.value) {
-        music_data[beat_index - 1].is_playing = false
+function loopPlayMusic() {
+    if (current_playing_beat >= music_data.length || !is_playing.value) {
+        // music_data[current_playing_beat - 1].is_playing = false
         is_playing.value = false
         return
     }
 
-    if (music_data[beat_index - 1]) music_data[beat_index - 1].is_playing = false
-    music_data[beat_index].is_playing = true
+    if (music_data[current_playing_beat - 1]) music_data[current_playing_beat - 1].is_playing = false
+    music_data[current_playing_beat].is_playing = true
 
-    music_data[beat_index].data.forEach(note => {
+    music_data[current_playing_beat].data.forEach(note => {
         PlaySound(note)
     })
 
-    setTimeout(() => loopPlayMusic(++beat_index), 60000 / tempo.value)
+    current_playing_beat++
+    setTimeout(() => loopPlayMusic(), 60000 / tempo.value)
 }
 
 function tooglePlayMusic() {
@@ -76,9 +78,22 @@ function tooglePlayMusic() {
         is_playing.value = false
     } else {
         is_playing.value = true
-        loopPlayMusic(0)
+        loopPlayMusic()
     }
 }
+
+function stopMusic() {
+    is_playing.value = false
+    setCurrentPlaying(0)
+}
+
+function setCurrentPlaying(beat_index: number) {
+    if (current_playing_beat > 0) music_data[current_playing_beat - 1].is_playing = false
+    music_data[current_playing_beat].is_playing = false
+
+    current_playing_beat = beat_index
+    music_data[current_playing_beat].is_playing = true
+}   
 
 async function saveMusic() {
     let music: Music.Music = {
@@ -116,7 +131,8 @@ async function saveMusic() {
         />
 
         <PrimaryButton class="btn" icon="add" @click="addBeat(8)">Add 8 beat</PrimaryButton>
-        <PrimaryButton class="btn" :icon="is_playing ? 'stop' : 'play_arrow'" @click="tooglePlayMusic">{{ is_playing ? "Stop" : "Play" }}</PrimaryButton>
+        <PrimaryButton class="btn" icon="stop" @click="stopMusic">Stop</PrimaryButton>
+        <PrimaryButton class="btn" :icon="is_playing ? 'pause' : 'play_arrow'" @click="tooglePlayMusic">{{ is_playing ? "Pause" : "Play" }}</PrimaryButton>
         <PrimaryButton class="btn" icon="save" @click="saveMusic">Save</PrimaryButton>
     </div>
 
@@ -129,7 +145,13 @@ async function saveMusic() {
 
         <div class="roll">
             <div v-for="(_, index) in music_data" :key="index">
-                <MusicBeat :piano="piano" :is_playing="music_data[index].is_playing" v-model="music_data[index].data" />
+                <MusicBeat
+                    :piano="piano"
+                    :is_playing="music_data[index].is_playing"
+                    :index="index"
+                    v-model="music_data[index].data"
+                    @update:select-current-playing="setCurrentPlaying"
+                />
             </div>
         </div>
     </div>
