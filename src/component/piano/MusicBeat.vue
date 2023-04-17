@@ -18,8 +18,6 @@ let music_beat: Beat = {}
 let beat_el = ref<HTMLDivElement>()
 
 onMounted(() => {
-    loadData()
-
     if (beat_el.value) {
         beat_el.value.addEventListener("contextmenu", event => {
             event.preventDefault()
@@ -28,6 +26,7 @@ onMounted(() => {
     }
 })
 
+loadData()
 function loadData() {
     if (!prop.modelValue) return
 

@@ -9,7 +9,7 @@
 
   "package": {
     "productName": "revelation-autoplay-piano",
-    "version": "0.0.0"
+    "version": "0.0.4"
   },
 
   "tauri": {
@@ -67,6 +67,10 @@
       },
 
       "path": {
+        "all": true
+      },
+
+      "os": {
         "all": true
       }
     },

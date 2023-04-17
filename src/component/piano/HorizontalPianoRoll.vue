@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
+import { type } from "@tauri-apps/api/os"
 import { GeneratePiano, PlaySound, SaveMusic, GetMusicFromPath } from "../../util/piano"
 import PianoKey from './PianoKey.vue'
 import MusicBeat from "./MusicBeat.vue"
@@ -33,7 +34,12 @@ async function loadDataFromPath(path: string) {
 
     tempo.value = music.tempo
 
-    let arr = path.split("/")
+    let os_type = await type()
+    let arr
+
+    if (os_type == "Windows_NT") arr = path.split("\\")
+    else arr = path.split("/")
+
     music_name = arr[arr.length - 1].replace(".json", "")
 
     music.data.forEach(beat => {
@@ -42,7 +48,6 @@ async function loadDataFromPath(path: string) {
             data: beat
         })
     })
-
     is_loaded.value = true
 }
 
@@ -57,7 +62,6 @@ function addBeat(length: number) {
 
 function loopPlayMusic() {
     if (current_playing_beat >= music_data.length || !is_playing.value) {
-        // music_data[current_playing_beat - 1].is_playing = false
         is_playing.value = false
         return
     }
