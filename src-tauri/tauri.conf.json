@@ -47,7 +47,8 @@
         "exists": true,
         "readFile": true,
         "createDir": true,
-        "readDir": true
+        "readDir": true,
+        "removeFile": true
       },
 
       "dialog": {

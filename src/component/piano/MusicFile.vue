@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
+import { confirm } from "@tauri-apps/api/dialog"
+import { removeFile } from "@tauri-apps/api/fs"
 import { CreateMusicControlWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 
@@ -8,6 +10,8 @@ const prop = defineProps<{
     name: string
     path: string
 }>()
+
+const emit = defineEmits(["on:remove_file"])
 
 const router = useRouter()
 const music_el = ref<HTMLDivElement>()
@@ -64,12 +68,15 @@ function openEditor() {
     router.push("/add-music?path=" + prop.path)
 }
 
-function openRenamePopup() {
+async function openRemovePopup() {
     closeContextMenu()
-}
 
-function openRemovePopup() {
-    closeContextMenu()
+    let is_confirm = await confirm("Bạn có chắc muốn xóa tệp này không?")
+
+    if (is_confirm) {
+        await removeFile(prop.path)
+        emit("on:remove_file")
+    }
 }
 
 </script>
@@ -84,7 +91,6 @@ function openRemovePopup() {
     <div ref="context_menu" class="context-menu">
         <div class="btn" @click="openPlayer">Open</div>
         <div class="btn" @click="openEditor">Edit</div>
-        <div class="btn" @click="openRenamePopup">Rename</div>
         <div class="btn" @click="openRemovePopup">Remove</div>
     </div>
 </div>
