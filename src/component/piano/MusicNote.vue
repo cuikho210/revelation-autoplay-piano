@@ -3,21 +3,19 @@ import { ref } from "vue"
 import { PlaySound } from '../../util/piano'
 
 const prop = defineProps<{
-    note: string
+    note: string,
+    is_active?: boolean
 }>()
 
 const emit = defineEmits(["update:active"])
-const is_active = ref(false)
 let is_sub_key = prop.note.includes('b')
 
 function toggleActive() {
-    is_active.value = !is_active.value
-
-    if (is_active.value) {
+    if (prop.is_active) {
+        emit("update:active", prop.note, false)
+    } else {
         PlaySound(prop.note);
         emit("update:active", prop.note, true)
-    } else {
-        emit("update:active", prop.note, false)
     }
 }
 

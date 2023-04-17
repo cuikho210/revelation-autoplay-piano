@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import MusicNote from "./MusicNote.vue"
 
+interface Beat {
+    [key: string]: boolean
+}
+
 const prop = defineProps<{
     piano: Piano.Note[]
     modelValue?: Music.Beat
@@ -8,16 +12,24 @@ const prop = defineProps<{
 }>()
 
 const emit = defineEmits(["update:modelValue"])
+let music_beat: Beat = {}
 
-let music_beat: any = {}
+loadData()
+function loadData() {
+    if (!prop.modelValue) return
+
+    prop.modelValue.forEach(note => {
+        music_beat[note] = true
+    })
+}
 
 function updateBeat(note: string, is_active: boolean) {
     music_beat[note] = is_active
 
     let beat: Music.Beat = []
     
-    for (let key in music_beat) {
-        if (music_beat[key]) beat.push(key)
+    for (let note in music_beat) {
+        if (music_beat[note]) beat.push(note)
     }
 
     emit("update:modelValue", beat)
@@ -28,7 +40,11 @@ function updateBeat(note: string, is_active: boolean) {
 <template>
 <div :class="{ 'is-playing': is_playing }">
     <div v-for="(note, index) of piano" :key="index">
-        <MusicNote :note="note.key + note.octa" @update:active="updateBeat" />
+        <MusicNote
+            :is_active="music_beat[note.key + note.octa]"
+            :note="note.key + note.octa"
+            @update:active="updateBeat"
+        />
     </div>
 </div>
 </template>

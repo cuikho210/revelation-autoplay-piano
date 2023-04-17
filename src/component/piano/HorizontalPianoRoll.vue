@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
-import { GeneratePiano, PlaySound, SaveMusic } from "../../util/piano"
+import { useRoute } from "vue-router"
+import { GeneratePiano, PlaySound, SaveMusic, GetMusicFromPath } from "../../util/piano"
 import PianoKey from './PianoKey.vue'
 import MusicBeat from "./MusicBeat.vue"
 import PrimaryInput from "../input/PrimaryInput.vue"
@@ -11,11 +12,38 @@ interface MusicBeat {
     data: Music.Beat
 }
 
+let route = useRoute()
 let piano = GeneratePiano(1, 7)
 let music_name = "Music " + new Date().toDateString()
 let music_data = reactive<MusicBeat[]>([])
 let is_playing = ref(false)
 let tempo = ref(120)
+let is_loaded = ref(false)
+
+if (route.query.path && typeof route.query.path == "string") {
+    loadDataFromPath(route.query.path)
+} else {
+    addBeat(32)
+    is_loaded.value = true
+}
+
+async function loadDataFromPath(path: string) {
+    let music = await GetMusicFromPath(path)
+
+    tempo.value = music.tempo
+
+    let arr = path.split("/")
+    music_name = arr[arr.length - 1].replace(".json", "")
+
+    music.data.forEach(beat => {
+        music_data.push({
+            is_playing: false,
+            data: beat
+        })
+    })
+
+    is_loaded.value = true
+}
 
 function addBeat(length: number) {
     for (let i = 0; i < length; i ++) {
@@ -66,12 +94,10 @@ async function saveMusic() {
     alert("Saved!")
 }
 
-addBeat(32)
-
 </script>
 
 <template>
-<section class="container">
+<section class="container" v-if="is_loaded">
     <div class="navbar">
         <PrimaryInput
             type="text"
@@ -108,6 +134,7 @@ addBeat(32)
         </div>
     </div>
 </section>
+<p v-else>Loading...</p>
 </template>
 
 <style scoped lang="scss">

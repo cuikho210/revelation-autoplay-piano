@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
+import { useRouter } from "vue-router"
 import { CreateMusicControlWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 
@@ -8,6 +9,7 @@ const prop = defineProps<{
     path: string
 }>()
 
+const router = useRouter()
 const music_el = ref<HTMLDivElement>()
 const background = ref<HTMLDivElement>()
 const context_menu = ref<HTMLDivElement>()
@@ -46,30 +48,44 @@ function openContextMenu(event: MouseEvent) {
     context_menu.value.style.opacity = "1"
 }
 
-async function open() {
+async function openPlayer() {
     try {
-        let config = await GetPianoConfig()
-        console.log(config)
+        await GetPianoConfig()
         await CreateMusicControlWindow(prop.path)
     }
     catch (e) {
         alert("Chưa có cấu hình phím")
     }
+
+    closeContextMenu()
+}
+
+function openEditor() {
+    router.push("/add-music?path=" + prop.path)
+}
+
+function openRenamePopup() {
+    closeContextMenu()
+}
+
+function openRemovePopup() {
+    closeContextMenu()
 }
 
 </script>
 
 <template>
 <div>
-    <div ref="music_el" class="music" @click="open">
+    <div ref="music_el" class="music" @click="openPlayer">
         {{ name }}
     </div>
 
     <div ref="background" class="background"></div>
     <div ref="context_menu" class="context-menu">
-        <div class="btn">Open</div>
-        <div class="btn">Edit</div>
-        <div class="btn">Remove</div>
+        <div class="btn" @click="openPlayer">Open</div>
+        <div class="btn" @click="openEditor">Edit</div>
+        <div class="btn" @click="openRenamePopup">Rename</div>
+        <div class="btn" @click="openRemovePopup">Remove</div>
     </div>
 </div>
 </template>
