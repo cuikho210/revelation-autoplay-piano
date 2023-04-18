@@ -10,8 +10,7 @@ Soạn bản nhạc yêu thích của bạn, mở game, ngồi vào đàn, nhấ
 Mọi việc còn lại hãy để tool lo :smile:
 
 **Lưu ý**:  
-Hiện tool không hoạt động trên bản PC Client do game chặn sự kiện chuột, mình không biết sửa kiểu gì ^^  
-Hãy sử dụng tool trên giả lập thay vì sử dụng PC Client.  
+Yêu cầu chạy với quyền quản trị viên để sử dụng tool trên PC Client. Quyền người dùng chỉ chạy được trên giả lập thôi nha ^^ 
 
 ## For Dev
 ### Requirements
