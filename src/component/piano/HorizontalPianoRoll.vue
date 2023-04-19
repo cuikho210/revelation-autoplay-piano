@@ -93,11 +93,11 @@ function stopMusic() {
 
 function setCurrentPlaying(beat_index: number) {
     if (current_playing_beat > 0) music_data[current_playing_beat - 1].is_playing = false
-    music_data[current_playing_beat].is_playing = false
+    if (music_data[current_playing_beat]) music_data[current_playing_beat].is_playing = false
 
     current_playing_beat = beat_index
     music_data[current_playing_beat].is_playing = true
-}   
+}
 
 async function saveMusic() {
     let music: Music.Music = {

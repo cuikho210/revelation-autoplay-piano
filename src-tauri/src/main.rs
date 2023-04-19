@@ -13,6 +13,16 @@ fn click_mouse_left(x: i32, y: i32) {
     enigo_control.mouse_down(MouseButton::Left);
     thread::sleep(time::Duration::from_millis(20));
     enigo_control.mouse_up(MouseButton::Left);
+    thread::sleep(time::Duration::from_millis(20));
+}
+
+#[tauri::command]
+fn play_note(app_handle: tauri::AppHandle, note: &str) {
+    let note_path = app_handle.path_resolver()
+            .resolve_resource(format!("./piano_key/{}.mp3", note))
+            .expect("failed to resolve resource dir");
+    
+    piano::play_note(note_path.to_path_buf());
 }
 
 fn main() {
@@ -25,12 +35,14 @@ fn main() {
                 window_shadows::set_shadow(&window, true).unwrap();
             }
             
-            piano::listen_piano_play_note(app);
             piano::listen_piano_save(app);
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![click_mouse_left])
+        .invoke_handler(tauri::generate_handler![
+            click_mouse_left,
+            play_note
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

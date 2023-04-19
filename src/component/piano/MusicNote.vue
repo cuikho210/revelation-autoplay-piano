@@ -38,7 +38,7 @@ button {
     width: 27px;
     height: 27px;
     background-color: transparent;
-    border: 1px solid rgba($color-primary-2, 0.2);
+    border: 1px solid rgba(var(--color-text-primary--rgb), 0.014);
 }
 
 .subkey {

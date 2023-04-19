@@ -33,8 +33,8 @@ export function GeneratePiano(octa_start: number, length: number): Piano.Note[] 
     return piano
 }
 
-export async function PlaySound(key: string) {
-    await emit("piano_play_note", key)
+export async function PlaySound(note: string) {
+    await invoke("play_note", { note })
 }
 
 export async function SavePiano(piano: Piano.Piano84Key) {
@@ -73,15 +73,15 @@ export class PianoPlayer {
         else this.Play()
     }
 
-    private loop() {
+    private /*async*/ loop() {
         if (!this.is_playing) return
         
         if (this.current_beat_index >= this.music.data.length) {
-            this.is_playing = false
+            this.Stop()
             return
         }
 
-        this.music.data[this.current_beat_index].forEach(piano_key => {
+        for (let piano_key of this.music.data[this.current_beat_index]) {
             if (!piano_key) return
 
             let octa: number
@@ -98,11 +98,11 @@ export class PianoPlayer {
             let piano_note = this.piano.find(note => note.key == key_name && note.octa == octa)
             if (!piano_note) return
 
-            invoke("click_mouse_left", {
+            /*await*/ invoke("click_mouse_left", {
                 x: piano_note.position.x,
                 y: piano_note.position.y
             })
-        })
+        }
 
         this.current_beat_index += 1
 

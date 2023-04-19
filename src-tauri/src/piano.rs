@@ -6,7 +6,7 @@ use std::fs;
 
 const FILE_CONFIG_PIANO_KEY: &str = "config_piano_key.json";
 
-fn play(note_path: PathBuf) {
+pub fn play_note(note_path: PathBuf) {
     thread::spawn(move || {
         let (_stream, stream_handler) = OutputStream::try_default().unwrap();
         let sink = Sink::try_new(&stream_handler).unwrap();
@@ -33,19 +33,5 @@ pub fn listen_piano_save(app: &mut tauri::App) {
 
         handle.emit_all("piano_draw", piano_data).unwrap();
         fs::write(&path_config_file, piano_data).unwrap();
-    });
-}
-
-pub fn listen_piano_play_note(app: &mut tauri::App) {
-    let resource_path = app.path_resolver();
-
-    app.listen_global("piano_play_note", move |event| {
-        let note: String = event.payload().unwrap().replace("\"", "");
-
-        let note_path = resource_path
-            .resolve_resource(format!("./piano_key/{}.mp3", note))
-            .expect("failed to resolve resource dir");
-    
-        play(note_path.to_path_buf());
     });
 }

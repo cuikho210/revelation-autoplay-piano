@@ -51,23 +51,42 @@ function updateBeat(note: string, is_active: boolean) {
 
 <template>
 <div ref="beat_el" :class="{ 'is-playing': is_playing }">
-    <div v-for="(note, index) of piano" :key="index">
         <MusicNote
+        v-for="(note, i) of piano" :key="i"
             :is_active="music_beat[note.key + note.octa]"
             :note="note.key + note.octa"
+            :class="{
+                'note': true,
+                'note-4': index % 4 == 0,
+                'note-16': index % 16 == 0
+            }"
             @update:active="updateBeat"
         />
-    </div>
 </div>
 </template>
 
 <style scoped lang="scss">
+@import "../../asset/scss/config.scss";
+
 div {
     display: flex;
     flex-direction: column-reverse;
+
+    .note-4 {
+        border-left: 1px solid rgba(var(--color-text-primary--rgb), 0.07);
+    }
+
+    .note-16 {
+        border-left: 1px solid rgba(var(--color-text-primary--rgb), 0.17);
+    }
 }
 
 .is-playing {
-    opacity: 0.2;
+    opacity: 0.4;
+
+    .note {
+        border-left: 1px solid $color-primary-1;
+        border-right: 1px solid $color-primary-1;
+    }
 }
 </style>
