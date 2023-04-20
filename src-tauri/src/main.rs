@@ -10,10 +10,11 @@ use enigo::{Enigo, MouseControllable, MouseButton};
 fn click_mouse_left(x: i32, y: i32) {
     let mut enigo_control = Enigo::new();
     enigo_control.mouse_move_to(x, y);
-    enigo_control.mouse_down(MouseButton::Left);
-    thread::sleep(time::Duration::from_millis(20));
-    enigo_control.mouse_up(MouseButton::Left);
-    thread::sleep(time::Duration::from_millis(20));
+    // enigo_control.mouse_down(MouseButton::Left);
+    // thread::sleep(time::Duration::from_millis(5));
+    // enigo_control.mouse_up(MouseButton::Left);
+    enigo_control.mouse_click(MouseButton::Left);
+    thread::sleep(time::Duration::from_millis(4));
 }
 
 #[tauri::command]
