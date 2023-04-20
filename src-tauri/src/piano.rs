@@ -1,21 +1,19 @@
-use std::{thread, path::PathBuf, fs::File};
-use std::io::BufReader;
-use rodio::{Decoder, OutputStream, Sink};
-use tauri::Manager;
+use std::thread;
 use std::fs;
+use std::path::{PathBuf};
+use tauri::Manager;
+use soloud::{Soloud, audio, AudioExt, LoadExt};
 
 const FILE_CONFIG_PIANO_KEY: &str = "config_piano_key.json";
 
 pub fn play_note(note_path: PathBuf) {
     thread::spawn(move || {
-        let (_stream, stream_handler) = OutputStream::try_default().unwrap();
-        let sink = Sink::try_new(&stream_handler).unwrap();
+        let sl = Soloud::default().unwrap();
+        let mut wav = audio::Wav::default();
 
-        let file = BufReader::new(File::open(note_path).unwrap());
-        let source = Decoder::new(file).unwrap();
-
-        sink.append(source);
-        sink.sleep_until_end();
+        wav.load(note_path).unwrap();
+        sl.play(&wav);
+        std::thread::sleep(std::time::Duration::from_secs(1));
     });
 }
 

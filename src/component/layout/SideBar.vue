@@ -76,7 +76,8 @@ let layoutStore = useLayoutStore()
         visibility $transition-time ease-out,
         opacity $transition-time ease-out,
         left $transition-time ease-out,
-        background-color $transition-time;
+        background-color $transition-time,
+        border-right $transition-time;
 
     header {
         div {

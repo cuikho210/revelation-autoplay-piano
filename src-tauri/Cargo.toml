@@ -13,12 +13,12 @@ edition = "2021"
 tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
-tauri = { version = "1.2", features = ["dialog-ask", "dialog-confirm", "dialog-message", "fs-create-dir", "fs-exists", "fs-read-dir", "fs-read-file", "fs-remove-file", "fs-write-file", "global-shortcut-all", "os-all", "path-all", "process-exit", "shell-open", "window-close", "window-create", "window-hide", "window-maximize", "window-minimize", "window-set-ignore-cursor-events", "window-set-resizable", "window-set-title", "window-show", "window-start-dragging", "window-unmaximize", "window-unminimize"] }
+tauri = { version = "1.2", features = ["dialog-ask", "dialog-confirm", "dialog-message", "dialog-open", "fs-create-dir", "fs-exists", "fs-read-dir", "fs-read-file", "fs-remove-file", "fs-write-file", "global-shortcut-all", "os-all", "path-all", "process-exit", "shell-open", "window-close", "window-create", "window-hide", "window-maximize", "window-minimize", "window-set-ignore-cursor-events", "window-set-resizable", "window-set-title", "window-show", "window-start-dragging", "window-unmaximize", "window-unminimize"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-rodio = "0.17.1"
 window-shadows = "0.2.1"
 enigo = "0.1.2"
+soloud = { version = "1", default-features = false, features = ["alsa"] }
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

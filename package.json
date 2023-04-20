@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.2.0",
+    "@tonejs/midi": "^2.0.28",
     "material-icons": "^1.13.4",
     "pinia": "^2.0.33",
     "sass": "^1.60.0",

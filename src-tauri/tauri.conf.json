@@ -56,7 +56,7 @@
         "ask": true,
         "confirm": true,
         "message": true,
-        "open": false,
+        "open": true,
         "save": false
       },
 

@@ -41,7 +41,7 @@ section {
     border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.05);
     display: flex;
     justify-content: space-between;
-    transition: background-color $transition-time;
+    transition: background-color $transition-time, border-bottom $transition-time;
     user-select: none;
     z-index: 20;
 

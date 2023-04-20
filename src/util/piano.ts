@@ -51,7 +51,7 @@ export class PianoPlayer {
     constructor(piano: Piano.Piano84Key, music: Music.Music) {
         this.piano = piano
         this.music = music
-        this.time_loop = 60000 / music.tempo
+        this.time_loop = 7500 / music.tempo // 60 * 1000 / (tempo * 8)
     }
 
     public Play() {
