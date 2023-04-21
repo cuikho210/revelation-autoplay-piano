@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
-import { type } from "@tauri-apps/api/os"
 import { GeneratePiano, PlaySound, SaveMusic, GetMusicFromPath } from "../../util/piano"
+import { GetFileNameFromPath } from "../../util/converter"
 import PianoKey from './PianoKey.vue'
 import MusicBeat from "./MusicBeat.vue"
 import PrimaryInput from "../input/PrimaryInput.vue"
@@ -33,14 +33,7 @@ async function loadDataFromPath(path: string) {
     let music = await GetMusicFromPath(path)
 
     tempo.value = music.tempo
-
-    let os_type = await type()
-    let arr
-
-    if (os_type == "Windows_NT") arr = path.split("\\")
-    else arr = path.split("/")
-
-    music_name = arr[arr.length - 1].replace(".json", "")
+    music_name = await GetFileNameFromPath(path)
 
     music.data.forEach(beat => {
         music_data.push({
@@ -74,7 +67,7 @@ function loopPlayMusic() {
     })
 
     current_playing_beat++
-    setTimeout(() => loopPlayMusic(), 60000 / tempo.value)
+    setTimeout(() => loopPlayMusic(), 7500 / tempo.value)
 }
 
 function tooglePlayMusic() {

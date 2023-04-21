@@ -13,7 +13,7 @@ pub fn play_note(note_path: PathBuf) {
 
         wav.load(note_path).unwrap();
         sl.play(&wav);
-        std::thread::sleep(std::time::Duration::from_secs(4));
+        std::thread::sleep(std::time::Duration::from_secs(1));
     });
 }
 
