@@ -21,3 +21,7 @@ async function main() {
         player.TogglePlay()
     })
 }
+
+document.addEventListener("contextmenu", event => {
+    event.preventDefault()
+})
