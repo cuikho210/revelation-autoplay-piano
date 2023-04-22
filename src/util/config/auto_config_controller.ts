@@ -4,9 +4,9 @@ import { SavePiano } from "../piano"
 import { GenerateAbsolutePianoKeys } from "../config_piano_key"
 import "../../asset/scss/page/auto_config_controller.scss"
 
-// document.addEventListener("contextmenu", event => {
-//     event.preventDefault()
-// })
+document.addEventListener("contextmenu", event => {
+    event.preventDefault()
+})
 
 main()
 
