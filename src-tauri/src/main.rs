@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod piano;
+mod input;
 
 use std::{thread, time};
 use enigo::{Enigo, MouseControllable, MouseButton};
@@ -10,11 +11,18 @@ use enigo::{Enigo, MouseControllable, MouseButton};
 fn click_mouse_left(x: i32, y: i32) {
     let mut enigo_control = Enigo::new();
     enigo_control.mouse_move_to(x, y);
-    // enigo_control.mouse_down(MouseButton::Left);
-    // thread::sleep(time::Duration::from_millis(5));
-    // enigo_control.mouse_up(MouseButton::Left);
     enigo_control.mouse_click(MouseButton::Left);
-    thread::sleep(time::Duration::from_millis(4));
+    thread::sleep(time::Duration::from_millis(5));
+}
+
+#[tauri::command]
+fn touch_tap(x: i32, y: i32, duration_in_ms: i32) {
+    input::touch_tap(
+        x, y,
+        time::Duration::from_millis(duration_in_ms.try_into().unwrap())
+    );
+
+    thread::sleep(time::Duration::from_millis(1));
 }
 
 #[tauri::command]
@@ -36,12 +44,14 @@ fn main() {
                 window_shadows::set_shadow(&window, true).unwrap();
             }
             
+            input::init_touch_injection();
             piano::listen_piano_save(app);
 
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
             click_mouse_left,
+            touch_tap,
             play_note
         ])
         .run(tauri::generate_context!())
