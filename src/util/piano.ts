@@ -98,9 +98,10 @@ export class PianoPlayer {
             let piano_note = this.piano.find(note => note.key == key_name && note.octa == octa)
             if (!piano_note) return
 
-            /*await*/ invoke("click_mouse_left", {
+            /*await*/ invoke("touch_tap", {
                 x: piano_note.position.x,
-                y: piano_note.position.y
+                y: piano_note.position.y,
+                durationInMs: 700
             })
         }
 
