@@ -3,9 +3,9 @@ import type { PhysicalSize, PhysicalPosition } from "@tauri-apps/api/window"
 import { SavePiano } from "../piano"
 import { GenerateAbsolutePianoKeys } from "../config_piano_key"
 
-// document.addEventListener("contextmenu", event => {
-//     event.preventDefault()
-// })
+document.addEventListener("contextmenu", event => {
+    event.preventDefault()
+})
 
 main()
 
