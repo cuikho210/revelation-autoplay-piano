@@ -73,13 +73,15 @@ export class PianoPlayer {
         else this.Play()
     }
 
-    private /*async*/ loop() {
+    private loop() {
         if (!this.is_playing) return
         
         if (this.current_beat_index >= this.music.data.length) {
             this.Stop()
             return
         }
+
+        let points: Position[] = []
 
         for (let piano_key of this.music.data[this.current_beat_index]) {
             if (!piano_key) return
@@ -98,13 +100,13 @@ export class PianoPlayer {
             let piano_note = this.piano.find(note => note.key == key_name && note.octa == octa)
             if (!piano_note) return
 
-            /*await*/ invoke("touch_tap", {
+            points.push({
                 x: piano_note.position.x,
-                y: piano_note.position.y,
-                durationInMs: 700
+                y: piano_note.position.y
             })
         }
 
+        invoke("touch_tap", { points })
         this.current_beat_index += 1
 
         setTimeout(() => this.loop(), this.time_loop)

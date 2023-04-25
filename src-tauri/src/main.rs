@@ -16,13 +16,10 @@ fn click_mouse_left(x: i32, y: i32) {
 }
 
 #[tauri::command]
-fn touch_tap(x: i32, y: i32, duration_in_ms: i32) {
-    input::touch_tap(
-        x, y,
-        time::Duration::from_millis(duration_in_ms.try_into().unwrap())
-    );
+fn touch_tap(points: Vec<input::Position>) {
+    input::touch_tap(points);
 
-    thread::sleep(time::Duration::from_millis(1));
+    thread::sleep(time::Duration::from_micros(100));
 }
 
 #[tauri::command]
