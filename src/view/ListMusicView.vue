@@ -4,16 +4,19 @@ import { ListMusic } from '../util/piano'
 import { ConvertMidiToJsonFromFile } from "../util/converter"
 import MusicFile from "../component/piano/MusicFile.vue"
 import PrimaryButton from "../component/button/PrimaryButton.vue"
+import PrimaryInput from "../component/input/PrimaryInput.vue"
 import type { FileEntry } from "@tauri-apps/api/fs"
 
 let is_loaded = ref(false)
 let list_music = ref<FileEntry[]>([])
+let search_string = ref("")
 
 loadData()
 
 async function loadData() {
     list_music.value = await ListMusic()
     is_loaded.value = true
+    search_string.value = ""
 }
 
 async function importFromMIDI() {
@@ -25,6 +28,14 @@ async function importFromMIDI() {
 <template>
 <section class="container-md">
     <div class="navbar">
+        <PrimaryInput
+            class="search"
+            type="search"
+            icon="search"
+            v-model="search_string"
+            placeholder="Search..."
+        />
+
         <PrimaryButton
             icon="file_open"
             @click="importFromMIDI"
@@ -37,6 +48,7 @@ async function importFromMIDI() {
                 :name="music.name || '_'"
                 :path="music.path"
                 @on:remove_file="loadData"
+                v-show="music.name?.toLowerCase().includes(search_string.toLowerCase())"
             />
         </div>
     </div>
@@ -51,6 +63,13 @@ async function importFromMIDI() {
 
 .navbar {
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+
+    .search {
+        width: 100%;
+        margin-right: 7px;
+    }
 }
 
 .list {

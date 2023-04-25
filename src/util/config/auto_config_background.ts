@@ -2,6 +2,7 @@ import { WebviewWindow } from "@tauri-apps/api/window"
 import { GenerateAbsolutePianoKeys } from "../config_piano_key"
 import { listen } from "@tauri-apps/api/event"
 import type { PhysicalSize } from "@tauri-apps/api/window"
+import "../../asset/scss/page/auto_config_background.scss"
 
 interface CustomContext extends CanvasRenderingContext2D {
     ClearRect: () => void

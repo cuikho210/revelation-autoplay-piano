@@ -2,6 +2,7 @@ import { WebviewWindow } from "@tauri-apps/api/window"
 import type { PhysicalSize, PhysicalPosition } from "@tauri-apps/api/window"
 import { SavePiano } from "../piano"
 import { GenerateAbsolutePianoKeys } from "../config_piano_key"
+import "../../asset/scss/page/auto_config_controller.scss"
 
 // document.addEventListener("contextmenu", event => {
 //     event.preventDefault()

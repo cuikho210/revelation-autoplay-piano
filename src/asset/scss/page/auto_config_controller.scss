@@ -24,24 +24,24 @@ body {
     margin: .5rem auto;
     margin-top: 1.5rem;
     border-top: 1px solid #eee;
-}
 
-.control .title {
-    display: block;
-    margin-top: -.7rem;
-    margin-bottom: .4rem;
-    text-align: center;
-}
+    .title {
+        display: block;
+        margin-top: -.7rem;
+        margin-bottom: .4rem;
+        text-align: center;
+    }
 
-.control div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-.control div > span {
-    min-width: 4rem;
-    text-align: center;
+        & > span {
+            min-width: 4rem;
+            text-align: center;
+        }
+    }
 }
 
 .btn {
@@ -56,8 +56,8 @@ body {
     background-color: #ff907f;
     color: #fff;
     border-radius: 4px;
-}
 
-.btn:active {
-    top: 1px;
+    &:active {
+        top: 1px;
+    }
 }
