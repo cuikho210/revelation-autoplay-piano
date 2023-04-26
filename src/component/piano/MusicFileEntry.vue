@@ -7,6 +7,7 @@ import { CreateMusicControlWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 
 const prop = defineProps<{
+    type: "collection" | "music"
     name: string
     path: string
 }>()
@@ -22,10 +23,12 @@ onMounted(() => {
     if (!music_el.value || !background.value || !context_menu.value) return
 
     background.value.addEventListener("click", closeContextMenu)
+    background.value.addEventListener("contextmenu", closeContextMenu)
     music_el.value.addEventListener("contextmenu", openContextMenu)
 })
 
-function closeContextMenu() {
+function closeContextMenu(event?: MouseEvent) {
+    if (event) event.preventDefault()
     if (!background.value || !context_menu.value) return
 
     background.value.style.visibility = "hidden"
@@ -50,6 +53,15 @@ function openContextMenu(event: MouseEvent) {
     background.value.style.visibility = "initial"
     context_menu.value.style.visibility = "initial"
     context_menu.value.style.opacity = "1"
+}
+
+function open() {
+    if (prop.type === "music") openPlayer()
+    else openCollection()
+}
+
+function openCollection() {
+    router.push("/music?path=" + prop.path)
 }
 
 async function openPlayer() {
@@ -83,14 +95,22 @@ async function openRemovePopup() {
 
 <template>
 <div>
-    <div ref="music_el" class="music" @click="openPlayer">
-        {{ name }}
+    <div
+        ref="music_el"
+        @click="open"
+        :class="{
+            'entry': true,
+            'music': type == 'music'
+        }"
+    >
+        <span class="material-icons-round">{{ type == "music" ? "piano" : "folder" }}</span>
+        <span class="text">{{ name }}</span>
     </div>
 
     <div ref="background" class="background"></div>
     <div ref="context_menu" class="context-menu">
-        <div class="btn" @click="openPlayer">Open</div>
-        <div class="btn" @click="openEditor">Edit</div>
+        <div class="btn" @click="open">Open</div>
+        <div class="btn" @click="openEditor" v-if="type === 'music'">Edit</div>
         <div class="btn" @click="openRemovePopup">Remove</div>
     </div>
 </div>
@@ -99,16 +119,48 @@ async function openRemovePopup() {
 <style scoped lang="scss">
 @import "../../asset/scss/config.scss";
 
+.entry {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: .5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    outline: 1px solid rgba(var(--color-text-primary--rgb), 0);
+    background-color: rgba($color-primary-1, 0.77);
+    color: var(--color-text-primary);
+    transition:
+        color $transition-time--short ease-out,
+        background-color $transition-time--short ease-out,
+        outline $transition-time--short ease-out;
+
+    .text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &:hover {
+        outline: 1px solid rgba(var(--color-text-primary--rgb), 0.4);
+    }
+
+    .material-icons-round {
+        margin-right: .4rem;
+        color: rgba(var(--color-text-primary--rgb), 0.7);
+        transition: color $transition-time;
+    }
+}
+
 .music {
     background-color: rgba($color-primary-1, 0.1);
     color: var(--color-text-primary);
-    padding: .7rem 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: color $transition-time, background-color $transition-time;
 
     &:hover {
         background-color: rgba($color-primary-2, 0.2);
+    }
+
+    .material-icons-round {
+        color: $color-primary-1;
     }
 }
 

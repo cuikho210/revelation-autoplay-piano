@@ -1,32 +1,60 @@
 <script setup lang="ts">
-import { ref } from "vue"
-import { ListMusic } from '../util/piano'
+import { ref, watch } from "vue"
+import { useRoute } from "vue-router"
+import { ListMusicAndCollection } from '../util/piano'
 import { ConvertMidiToJsonFromFile } from "../util/converter"
-import MusicFile from "../component/piano/MusicFile.vue"
-import PrimaryButton from "../component/button/PrimaryButton.vue"
+import MusicFileEntry from "../component/piano/MusicFileEntry.vue"
 import PrimaryInput from "../component/input/PrimaryInput.vue"
+import IconOnlyButton from "../component/button/IconOnlyButton.vue"
+import PrimaryDialog from "../component/layout/PrimaryDialog.vue"
 import type { FileEntry } from "@tauri-apps/api/fs"
+import type { LocationQuery } from "vue-router"
 
+let route = useRoute()
 let is_loaded = ref(false)
+let is_open_create_collection_dialog = ref(false)
 let list_music = ref<FileEntry[]>([])
+let list_collection = ref<FileEntry[]>([])
 let search_string = ref("")
+let current_path: string | undefined
 
-loadData()
+updateCurrentPath()
+loadCollection()
 
-async function loadData() {
-    list_music.value = await ListMusic()
+watch(route, () => {
+    updateCurrentPath()
+    loadCollection()
+}, { immediate: true })
+
+function updateCurrentPath(query?: LocationQuery) {
+    if (!query) query = route.query
+
+    if (query.path && typeof query.path == "string") {
+        current_path = query.path
+    } else {
+        current_path = undefined
+    }
+}
+
+async function loadCollection(path?: string) {
+    if (path) current_path = path
+    
+    let result = await ListMusicAndCollection(current_path)
+    list_collection.value = result.collections
+    list_music.value = result.musics
+
     is_loaded.value = true
     search_string.value = ""
 }
 
 async function importFromMIDI() {
     await ConvertMidiToJsonFromFile()
-    await loadData()
+    await loadCollection()
 }
 </script>
 
 <template>
-<section class="container-md">
+<section class="container-md" :key="route.fullPath">
     <div class="navbar">
         <PrimaryInput
             class="search"
@@ -36,18 +64,36 @@ async function importFromMIDI() {
             placeholder="Search..."
         />
 
-        <PrimaryButton
-            icon="file_open"
+        <IconOnlyButton
+            icon="create_new_folder"
             @click="importFromMIDI"
-        >Import from MIDI</PrimaryButton>
+            title="Create Collection"
+        />
+
+        <IconOnlyButton
+            icon="audio_file"
+            @click="importFromMIDI"
+            title="Import MIDI file"
+        />
     </div>
 
     <div class="list" v-if="is_loaded">
-        <div class="music" v-for="(music, index) in list_music" :key="index">
-            <MusicFile
+        <div v-for="collection in list_collection" :key="collection.path">
+            <MusicFileEntry
+                type="collection"
+                :name="collection.name || '_'"
+                :path="collection.path"
+                @on:remove_file="loadCollection"
+                v-show="collection.name?.toLowerCase().includes(search_string.toLowerCase())"
+            />
+        </div>
+        
+        <div v-for="music in list_music" :key="music.path">
+            <MusicFileEntry
+                type="music"
                 :name="music.name || '_'"
                 :path="music.path"
-                @on:remove_file="loadData"
+                @on:remove_file="loadCollection"
                 v-show="music.name?.toLowerCase().includes(search_string.toLowerCase())"
             />
         </div>
@@ -55,6 +101,21 @@ async function importFromMIDI() {
     <p v-else>
         Loading...
     </p>
+
+    <Transition name="fade-in-fast">
+        <PrimaryDialog
+            title="Create Collection"
+            v-model="is_open_create_collection_dialog"
+            v-show="is_open_create_collection_dialog"
+        >
+            <PrimaryInput
+                icon="tag"
+                type="text"
+                width="100%"
+                placeholder="Collection name"
+            />
+        </PrimaryDialog>
+    </Transition>
 </section>
 </template>
 

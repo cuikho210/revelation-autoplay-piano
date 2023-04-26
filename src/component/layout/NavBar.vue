@@ -47,11 +47,9 @@ section {
 
     .btn {
         cursor: pointer;
-        padding: .25rem;
-        margin: .25rem;
-        border-radius: 50%;
+        padding: .4rem .7rem;
         color: $color-primary-1;
-        transition: background-color $transition-time;
+        transition: background-color $transition-time ease-out;
 
         &:hover {
             background-color: rgba(var(--color-text-primary--rgb), 0.05);
@@ -70,21 +68,13 @@ section {
 
     .right {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: flex-end;
 
         .btn {
-            margin: 0;
-            transition: color $transition-time, background-color $transition-time;
-        }
-
-        .btn-minimize {
-            color: rgb(25, 226, 25);
-
-            &:hover {
-                color: #fff;
-                background-color: rgb(151, 255, 151);
-            }
+            transition: 
+                color $transition-time--short ease-out,
+                background-color $transition-time--short ease-out;
         }
 
         .btn-close {

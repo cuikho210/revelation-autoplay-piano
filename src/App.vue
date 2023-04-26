@@ -14,11 +14,11 @@ registerShortcut()
 		<NavBar />
 
 		<router-view v-slot="{ Component }">
-            <!-- <Transition name="fade-in-fast" mode="out-in"> -->
+            <Transition name="fade-in-fast" mode="out-in">
 				<!-- <div> -->
 					<component :is="Component"></component>
 				<!-- </div> -->
-            <!-- </Transition> -->
+            </Transition>
         </router-view>
 	</main>
 </template>

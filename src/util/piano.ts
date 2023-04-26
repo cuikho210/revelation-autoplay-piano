@@ -124,14 +124,42 @@ export async function SaveMusic(music_name: string, music: Music.Music) {
     await writeTextFile(music_file_path, JSON.stringify(music))
 }
 
-export async function ListMusic(): Promise<FileEntry[]> {
-    let music_dir_path = await getMusicDir()
+export async function ListAll(path?: string): Promise<FileEntry[]> {
+    let music_dir_path: string
+
+    if (path) music_dir_path = path
+    else music_dir_path = await getMusicDir()
 
     let is_music_dir_exist = await exists(music_dir_path)
-    if (!is_music_dir_exist) throw null
+    if (!is_music_dir_exist) throw new Error("Directory does not exist")
 
     let entries = await readDir(music_dir_path)
     return entries
+}
+
+export async function ListMusic(path?: string): Promise<FileEntry[]> {
+    let entries = await ListAll(path)
+    let musics = entries.filter(entry => entry.name && entry.name.endsWith(".json"))
+
+    return musics
+}
+
+export async function ListCollection(path?: string): Promise<FileEntry[]> {
+    let entries = await ListAll(path)
+    let collections = entries.filter(entry => entry.children !== undefined)
+
+    return collections
+}
+
+export async function ListMusicAndCollection(path?: string) {
+    let entries = await ListAll(path)
+    let collections = entries.filter(entry => entry.children !== undefined)
+    let musics = entries.filter(entry => entry.name && entry.name.endsWith(".json"))
+
+    return {
+        collections,
+        musics
+    }
 }
 
 export async function GetMusicFromPath(music_path: string): Promise<Music.Music> {
