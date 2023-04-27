@@ -8,8 +8,8 @@
   },
 
   "package": {
-    "productName": "revelation-autoplay-piano",
-    "version": "0.1.3"
+    "version": "0.1.3",
+    "productName": "Revelation Autoplay Piano"
   },
 
   "tauri": {
@@ -85,7 +85,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "revelation-autoplay-piano",
+      "identifier": "com.github.cuikho210",
       "targets": "all",
       "resources": [
         "./piano_key"
