@@ -1,10 +1,6 @@
 import { emit } from '@tauri-apps/api/event'
 import { invoke } from "@tauri-apps/api/tauri"
-import { documentDir, resolve } from "@tauri-apps/api/path"
-import { writeTextFile, createDir, exists, readDir, readTextFile } from "@tauri-apps/api/fs"
 import { WebviewWindow } from "@tauri-apps/api/window"
-import type { FileEntry } from '@tauri-apps/api/fs'
-import { GetMusicDir } from './music'
 
 export function GeneratePiano(octa_start: number, length: number): Piano.Note[] {
     let octa_template: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]

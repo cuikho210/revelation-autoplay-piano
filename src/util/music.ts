@@ -1,5 +1,6 @@
 import { documentDir, resolve } from "@tauri-apps/api/path"
 import { exists, createDir, writeTextFile, readDir, readTextFile } from "@tauri-apps/api/fs"
+import { GetFileNameFromPath } from "./converter"
 import type { FileEntry } from "@tauri-apps/api/fs"
 
 export async function GetMusicDir(): Promise<string> {
@@ -70,4 +71,23 @@ export async function CreateCollection(collection_name: string, parent_dir?: str
     let new_path = await resolve(parent_dir, collection_name)
 
     await createDir(new_path)
+}
+
+export async function GetCollectionBreadcrumb(path?: string): Promise<FileEntry[]> {
+    if (!path) return []
+
+    let music_dir_path = await GetMusicDir()
+    let current_path = path
+    let breadcrumb: FileEntry[] = []
+    
+    while (current_path !== music_dir_path) {
+        breadcrumb.push({
+            name: await GetFileNameFromPath(current_path),
+            path: current_path
+        })
+
+        current_path = await resolve(current_path, "..")
+    }
+
+    return breadcrumb.reverse()
 }

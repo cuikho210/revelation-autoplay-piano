@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from "vue"
 import { useRoute } from "vue-router"
-import { ListMusicAndCollection, CreateCollection } from '../util/music'
+import { ListMusicAndCollection, CreateCollection, GetCollectionBreadcrumb } from '../util/music'
 import { ConvertMidiToJsonFromFile } from "../util/converter"
 import MusicFileEntry from "../component/piano/MusicFileEntry.vue"
 import PrimaryInput from "../component/input/PrimaryInput.vue"
@@ -14,6 +14,7 @@ let route = useRoute()
 let is_loaded = ref(false)
 let list_music = ref<FileEntry[]>([])
 let list_collection = ref<FileEntry[]>([])
+let collection_breadcrumb = ref<FileEntry[]>([])
 let search_string = ref("")
 let current_path: string | undefined
 
@@ -39,7 +40,9 @@ async function loadCollection(path?: string) {
     let result = await ListMusicAndCollection(current_path)
     list_collection.value = result.collections
     list_music.value = result.musics
-
+    
+    collection_breadcrumb.value = await GetCollectionBreadcrumb(current_path)
+    console.log(collection_breadcrumb.value)
     is_loaded.value = true
     search_string.value = ""
 }
@@ -88,6 +91,16 @@ let createCollection = reactive({
             @click="importFromMIDI"
             title="Import MIDI file"
         />
+    </div>
+
+    <div class="breadcrumb">
+        <div>
+            <RouterLink to="/music">Home</RouterLink>
+        </div>
+
+        <div v-for="entry in collection_breadcrumb" :key="entry.path">
+            / <RouterLink :to="'/music?path=' + entry.path">{{ entry.name }}</RouterLink>
+        </div>
     </div>
 
     <div class="list" v-if="is_loaded">
@@ -149,6 +162,14 @@ let createCollection = reactive({
     .search {
         width: 100%;
         margin-right: 7px;
+    }
+}
+
+.breadcrumb {
+    margin: 1rem auto;
+
+    div {
+        display: inline;
     }
 }
 
