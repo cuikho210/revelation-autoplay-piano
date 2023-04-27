@@ -2,7 +2,7 @@ import { Midi } from "@tonejs/midi"
 import { open } from "@tauri-apps/api/dialog"
 import { readBinaryFile } from "@tauri-apps/api/fs"
 import { type } from "@tauri-apps/api/os"
-import { SaveMusic } from "./piano"
+import { SaveMusic } from "./music"
 
 function convertSharpNoteToFlatNote(key: string, octa: number): string {
     let result_key = key
@@ -28,7 +28,7 @@ export async function GetFileNameFromPath(path: string): Promise<string> {
     return music_name
 }
 
-export async function ConvertMidiToJsonFromFile() {
+export async function ConvertMidiToJsonFromFile(output_dir?: string) {
     let file_path = await open({
         multiple: false,
         filters: [{
@@ -79,7 +79,8 @@ export async function ConvertMidiToJsonFromFile() {
 
     await SaveMusic(
         music_name,
-        music
+        music,
+        output_dir
     )
 }
 

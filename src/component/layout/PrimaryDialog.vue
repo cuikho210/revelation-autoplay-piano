@@ -54,7 +54,6 @@ section {
         width: 100%;
         height: 100%;
         background-color: rgba(var(--color-text-primary--rgb), 0.05);
-        backdrop-filter: blur(4px);
     }
 
     .main {

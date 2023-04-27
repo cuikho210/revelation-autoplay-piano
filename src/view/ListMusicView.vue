@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { ref, watch } from "vue"
+import { ref, reactive, watch } from "vue"
 import { useRoute } from "vue-router"
-import { ListMusicAndCollection } from '../util/piano'
+import { ListMusicAndCollection, CreateCollection } from '../util/music'
 import { ConvertMidiToJsonFromFile } from "../util/converter"
 import MusicFileEntry from "../component/piano/MusicFileEntry.vue"
 import PrimaryInput from "../component/input/PrimaryInput.vue"
 import IconOnlyButton from "../component/button/IconOnlyButton.vue"
+import PrimaryButton from "../component/button/PrimaryButton.vue"
 import PrimaryDialog from "../component/layout/PrimaryDialog.vue"
 import type { FileEntry } from "@tauri-apps/api/fs"
-import type { LocationQuery } from "vue-router"
 
 let route = useRoute()
 let is_loaded = ref(false)
-let is_open_create_collection_dialog = ref(false)
 let list_music = ref<FileEntry[]>([])
 let list_collection = ref<FileEntry[]>([])
 let search_string = ref("")
@@ -26,11 +25,9 @@ watch(route, () => {
     loadCollection()
 }, { immediate: true })
 
-function updateCurrentPath(query?: LocationQuery) {
-    if (!query) query = route.query
-
-    if (query.path && typeof query.path == "string") {
-        current_path = query.path
+function updateCurrentPath() {
+    if (route.query.path && typeof route.query.path == "string") {
+        current_path = route.query.path
     } else {
         current_path = undefined
     }
@@ -48,9 +45,25 @@ async function loadCollection(path?: string) {
 }
 
 async function importFromMIDI() {
-    await ConvertMidiToJsonFromFile()
+    await ConvertMidiToJsonFromFile(current_path)
     await loadCollection()
 }
+
+let createCollection = reactive({
+    is_show: false,
+    collection_name: "",
+
+    Open() {
+        createCollection.is_show = true
+    },
+
+    Create() {
+        CreateCollection(createCollection.collection_name, current_path)
+        loadCollection()
+        createCollection.collection_name = ""
+        createCollection.is_show = false
+    }
+})
 </script>
 
 <template>
@@ -66,7 +79,7 @@ async function importFromMIDI() {
 
         <IconOnlyButton
             icon="create_new_folder"
-            @click="importFromMIDI"
+            @click="createCollection.Open"
             title="Create Collection"
         />
 
@@ -83,7 +96,7 @@ async function importFromMIDI() {
                 type="collection"
                 :name="collection.name || '_'"
                 :path="collection.path"
-                @on:remove_file="loadCollection"
+                @on:remove="loadCollection"
                 v-show="collection.name?.toLowerCase().includes(search_string.toLowerCase())"
             />
         </div>
@@ -93,7 +106,7 @@ async function importFromMIDI() {
                 type="music"
                 :name="music.name || '_'"
                 :path="music.path"
-                @on:remove_file="loadCollection"
+                @on:remove="loadCollection"
                 v-show="music.name?.toLowerCase().includes(search_string.toLowerCase())"
             />
         </div>
@@ -105,15 +118,21 @@ async function importFromMIDI() {
     <Transition name="fade-in-fast">
         <PrimaryDialog
             title="Create Collection"
-            v-model="is_open_create_collection_dialog"
-            v-show="is_open_create_collection_dialog"
+            v-model="createCollection.is_show"
+            v-show="createCollection.is_show"
         >
             <PrimaryInput
                 icon="tag"
                 type="text"
                 width="100%"
                 placeholder="Collection name"
+                v-model="createCollection.collection_name"
             />
+
+            <PrimaryButton
+                icon="add"
+                @click="createCollection.Create"
+            >Create</PrimaryButton>
         </PrimaryDialog>
     </Transition>
 </section>

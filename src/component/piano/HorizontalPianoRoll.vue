@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
-import { GeneratePiano, PlaySound, SaveMusic, GetMusicFromPath } from "../../util/piano"
+import { GeneratePiano, PlaySound } from "../../util/piano"
+import { SaveMusic, GetMusicFromPath } from "../../util/music"
 import { GetFileNameFromPath } from "../../util/converter"
 import PianoKey from './PianoKey.vue'
 import MusicBeat from "./MusicBeat.vue"

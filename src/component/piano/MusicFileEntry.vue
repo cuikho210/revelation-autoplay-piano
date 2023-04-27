@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { confirm } from "@tauri-apps/api/dialog"
-import { removeFile } from "@tauri-apps/api/fs"
+import { removeFile, removeDir } from "@tauri-apps/api/fs"
 import { CreateMusicControlWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 
@@ -12,7 +12,7 @@ const prop = defineProps<{
     path: string
 }>()
 
-const emit = defineEmits(["on:remove_file"])
+const emit = defineEmits(["on:remove"])
 
 const router = useRouter()
 const music_el = ref<HTMLDivElement>()
@@ -86,8 +86,10 @@ async function openRemovePopup() {
     let is_confirm = await confirm("Bạn có chắc muốn xóa tệp này không?")
 
     if (is_confirm) {
-        await removeFile(prop.path)
-        emit("on:remove_file")
+        if (prop.type == "collection") await removeDir(prop.path, { recursive: true })
+        else await removeFile(prop.path)
+
+        emit("on:remove")
     }
 }
 

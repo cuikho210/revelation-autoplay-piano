@@ -4,13 +4,7 @@ import { documentDir, resolve } from "@tauri-apps/api/path"
 import { writeTextFile, createDir, exists, readDir, readTextFile } from "@tauri-apps/api/fs"
 import { WebviewWindow } from "@tauri-apps/api/window"
 import type { FileEntry } from '@tauri-apps/api/fs'
-
-async function getMusicDir(): Promise<string> {
-    let document_path = await documentDir()
-    let music_dir_path = await resolve(document_path, "Revelation_Musics")
-
-    return music_dir_path
-}
+import { GetMusicDir } from './music'
 
 export function GeneratePiano(octa_start: number, length: number): Piano.Note[] {
     let octa_template: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
@@ -111,62 +105,6 @@ export class PianoPlayer {
 
         setTimeout(() => this.loop(), this.time_loop)
     }
-}
-
-export async function SaveMusic(music_name: string, music: Music.Music) {
-    let file_name = music_name.replaceAll(" ", "_") + ".json"
-    let music_dir_path = await getMusicDir()
-    let music_file_path = await resolve(music_dir_path, file_name)
-    
-    let is_music_dir_exist = await exists(music_dir_path)
-    if (!is_music_dir_exist) await createDir(music_dir_path)
-
-    await writeTextFile(music_file_path, JSON.stringify(music))
-}
-
-export async function ListAll(path?: string): Promise<FileEntry[]> {
-    let music_dir_path: string
-
-    if (path) music_dir_path = path
-    else music_dir_path = await getMusicDir()
-
-    let is_music_dir_exist = await exists(music_dir_path)
-    if (!is_music_dir_exist) throw new Error("Directory does not exist")
-
-    let entries = await readDir(music_dir_path)
-    return entries
-}
-
-export async function ListMusic(path?: string): Promise<FileEntry[]> {
-    let entries = await ListAll(path)
-    let musics = entries.filter(entry => entry.name && entry.name.endsWith(".json"))
-
-    return musics
-}
-
-export async function ListCollection(path?: string): Promise<FileEntry[]> {
-    let entries = await ListAll(path)
-    let collections = entries.filter(entry => entry.children !== undefined)
-
-    return collections
-}
-
-export async function ListMusicAndCollection(path?: string) {
-    let entries = await ListAll(path)
-    let collections = entries.filter(entry => entry.children !== undefined)
-    let musics = entries.filter(entry => entry.name && entry.name.endsWith(".json"))
-
-    return {
-        collections,
-        musics
-    }
-}
-
-export async function GetMusicFromPath(music_path: string): Promise<Music.Music> {
-    let content = await readTextFile(music_path)
-    let music: Music.Music = JSON.parse(content)
-
-    return music
 }
 
 export async function CreateMusicControlWindow(music_path: string) {

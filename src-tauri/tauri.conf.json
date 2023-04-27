@@ -48,7 +48,8 @@
         "readFile": true,
         "createDir": true,
         "readDir": true,
-        "removeFile": true
+        "removeFile": true,
+        "removeDir": true
       },
 
       "dialog": {

@@ -1,6 +1,7 @@
 import { listen } from "@tauri-apps/api/event"
 import { GetPianoConfig } from "../config_piano_key"
-import { PianoPlayer, GetMusicFromPath } from "../piano"
+import { PianoPlayer } from "../piano"
+import { GetMusicFromPath } from "../music"
 import "../../asset/scss/page/play_music_controller.scss"
 
 main()
