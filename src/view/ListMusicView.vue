@@ -157,6 +157,7 @@ let createCollection = reactive({
 @import "../asset/scss/container.scss";
 
 .navbar {
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
