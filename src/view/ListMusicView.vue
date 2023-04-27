@@ -42,7 +42,7 @@ async function loadCollection(path?: string) {
     list_music.value = result.musics
     
     collection_breadcrumb.value = await GetCollectionBreadcrumb(current_path)
-    console.log(collection_breadcrumb.value)
+    
     is_loaded.value = true
     search_string.value = ""
 }
@@ -110,6 +110,7 @@ let createCollection = reactive({
                 :name="collection.name || '_'"
                 :path="collection.path"
                 @on:remove="loadCollection"
+                @on:rename="loadCollection"
                 v-show="collection.name?.toLowerCase().includes(search_string.toLowerCase())"
             />
         </div>
@@ -117,9 +118,10 @@ let createCollection = reactive({
         <div v-for="music in list_music" :key="music.path">
             <MusicFileEntry
                 type="music"
-                :name="music.name || '_'"
+                :name="music.name?.slice(0, music.name?.length - 5) || '_'"
                 :path="music.path"
                 @on:remove="loadCollection"
+                @on:rename="loadCollection"
                 v-show="music.name?.toLowerCase().includes(search_string.toLowerCase())"
             />
         </div>

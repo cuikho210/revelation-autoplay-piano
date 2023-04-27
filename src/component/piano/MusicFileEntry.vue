@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { ref, reactive, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import { confirm } from "@tauri-apps/api/dialog"
 import { removeFile, removeDir } from "@tauri-apps/api/fs"
+import { invoke } from "@tauri-apps/api"
 import { CreateMusicControlWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
+import PrimaryDialog from "../layout/PrimaryDialog.vue"
+import PrimaryButton from "../button/PrimaryButton.vue"
+import PrimaryInput from "../input/PrimaryInput.vue"
 
 const prop = defineProps<{
     type: "collection" | "music"
@@ -12,7 +16,7 @@ const prop = defineProps<{
     path: string
 }>()
 
-const emit = defineEmits(["on:remove"])
+const emit = defineEmits(["on:remove", "on:rename"])
 
 const router = useRouter()
 const music_el = ref<HTMLDivElement>()
@@ -93,6 +97,30 @@ async function openRemovePopup() {
     }
 }
 
+let rename = reactive({
+    is_show: false,
+    new_name: prop.name,
+
+    Open() {
+        closeContextMenu()
+        rename.is_show = true
+    },
+
+    async Rename() {
+        let new_name = rename.new_name
+        if (prop.type == "music") new_name += ".json"
+
+        await invoke("rename", {
+            path: prop.path,
+            newName: new_name
+        })
+
+        emit("on:rename")
+        // rename.is_show = false
+        // rename.new_name = prop.name
+    }
+})
+
 </script>
 
 <template>
@@ -113,8 +141,30 @@ async function openRemovePopup() {
     <div ref="context_menu" class="context-menu">
         <div class="btn" @click="open">Open</div>
         <div class="btn" @click="openEditor" v-if="type === 'music'">Edit</div>
+        <div class="btn" @click="rename.Open">Rename</div>
         <div class="btn" @click="openRemovePopup">Remove</div>
     </div>
+
+    <Transition name="fade-in-fast">
+        <PrimaryDialog
+            title="Đổi Tên"
+            v-model="rename.is_show"
+            v-show="rename.is_show"
+        >
+            <PrimaryInput
+                icon="tag"
+                type="text"
+                width="100%"
+                placeholder="Tên mới"
+                v-model="rename.new_name"
+            />
+
+            <PrimaryButton
+                icon="drive_file_rename_outline"
+                @click="rename.Rename"
+            >Đổi Tên</PrimaryButton>
+        </PrimaryDialog>
+    </Transition>
 </div>
 </template>
 

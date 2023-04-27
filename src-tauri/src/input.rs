@@ -68,6 +68,7 @@ fn new_pointer_touch_info(x: i32, y: i32, flags: POINTER_FLAGS) -> POINTER_TOUCH
     touch_info
 }
 
+#[tauri::command]
 pub fn touch_tap(points: Vec<Position>) {
     unsafe {
         for point in points {

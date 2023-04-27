@@ -670,19 +670,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "enigo"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "464c869256b1d6c1db151ab7a164fe0a5a6d340095460f92d7e8fba78ab47dc0"
-dependencies = [
- "core-graphics",
- "libc",
- "objc",
- "pkg-config",
- "windows 0.48.0",
-]
-
-[[package]]
 name = "errno"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2312,7 +2299,6 @@ checksum = "f162c6dd7b008981e4d40210aca20b4bd0f9b60ca9271061b07f78537722f2e1"
 name = "revelation-autoplay-piano"
 version = "0.0.0"
 dependencies = [
- "enigo",
  "rodio",
  "serde",
  "serde_json",
