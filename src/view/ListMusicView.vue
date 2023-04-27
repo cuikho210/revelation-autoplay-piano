@@ -161,8 +161,6 @@ let createCollection = reactive({
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
 
     .search {
         width: 100%;
