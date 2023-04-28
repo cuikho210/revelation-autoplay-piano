@@ -85,11 +85,17 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.github.cuikho210",
+      "identifier": "com.cuikho210.revelation-autoplay-piano",
       "targets": "all",
       "resources": [
         "./piano_key"
-      ]
+      ],
+      "windows": {
+        "wix": {
+          "bannerPath": "./images/banner.png",
+          "dialogImagePath": "./images/dialog.png"
+        }
+      }
     },
     "security": {
       "csp": null
