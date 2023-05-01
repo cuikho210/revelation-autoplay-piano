@@ -25,30 +25,42 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install frontend dependencies
-        run: yarn install 
-      - uses: JonasKruckenberg/tauri-build@v1
-        id: tauri_build
+        run: yarn install
+      - name: Tauri build
+        uses: tauri-apps/tauri-action@v0
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-      - uses: actions/upload-artifact@v3
         with:
-          name: artifacts
-          path: "${{ join(fromJSON(steps.tauri_build.outputs.artifacts), '\n') }}"
-  publish:
-    needs: build-binaries
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v3
-        id: download
-        with:
-          name: artifacts
-          path: artifacts
-      - name: 'create release'
-        uses: softprops/action-gh-release@master
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-        with:
-          draft: true
-          files: ./artifacts/**/*
+          tagName: v__VERSION__
+          releaseName: "Release v__VERSION__"
+          releaseBody: "More new features are now supported."
+          releaseDraft: true
+          prerelease: false
+      # - uses: JonasKruckenberg/tauri-build@v1
+      #   id: tauri_build
+      #   env:
+      #     TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+      #     TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: artifacts
+      #     path: "${{ join(fromJSON(steps.tauri_build.outputs.artifacts), '\n') }}"
+  # publish:
+  #   needs: build-binaries
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/download-artifact@v3
+  #       id: download
+  #       with:
+  #         name: artifacts
+  #         path: artifacts
+  #     - name: 'create release'
+  #       uses: softprops/action-gh-release@master
+  #       env:
+  #         GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+  #       with:
+  #         draft: true
+  #         files: ./artifacts/**/*
