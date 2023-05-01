@@ -22,6 +22,9 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
       - name: install frontend dependencies
         run: yarn install 
+      - name: Get release message
+        shell: pwsh
+        run: "release_body=$(Get-Content ./release_message.txt)" >> $env:GITHUB_ENV
       - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +33,7 @@ jobs:
         with:
           tagName: v__VERSION__
           releaseName: 'Release v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseBody: ${{ env.release_body }}
           releaseDraft: true
           prerelease: false
           includeUpdaterJson: true
