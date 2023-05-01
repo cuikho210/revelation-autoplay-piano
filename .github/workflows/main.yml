@@ -24,7 +24,8 @@ jobs:
         run: yarn install 
       - name: Get release message
         shell: pwsh
-        run: "release_body=$(Get-Content ./release_message.txt)" >> $env:GITHUB_ENV
+        run: |
+          "release_body=$(Get-Content ./release_message.txt)" >> $env:GITHUB_ENV
       - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
