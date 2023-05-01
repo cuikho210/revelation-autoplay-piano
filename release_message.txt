@@ -1,0 +1,3 @@
+### Update  
++ Tùy chỉnh giao diện trình cài đặt, thêm vài cái ảnh cho màu mè hoa lá  
++ Thêm trình cập nhật trong ứng dụng  
