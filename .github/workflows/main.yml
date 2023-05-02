@@ -41,4 +41,4 @@ jobs:
           includeUpdaterJson: true
       - name: Update gist updater.json
         run: |
-          Write-Output ${{ join(steps.build_bundle.outputs.artifactPaths.*, "\n") }}
+          Write-Output ${{ join(steps.build_bundle.outputs.artifactPaths.*, '\n') }}
