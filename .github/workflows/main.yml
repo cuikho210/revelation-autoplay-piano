@@ -40,5 +40,7 @@ jobs:
           prerelease: false
           includeUpdaterJson: true
       - name: Update gist updater.json
+        env:
+          UPDATER_JSON_PATH: ${{ join(steps.build_bundle.outputs.artifactPaths.*, '\n') }}
         run: |
-          Write-Output ${{ join(steps.build_bundle.outputs.artifactPaths.*, '\n') }}
+          Write-Output $env:UPDATER_JSON_PATH
