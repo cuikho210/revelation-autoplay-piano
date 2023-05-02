@@ -1,8 +1,8 @@
-name: 'Test Action'
+name: 'Publish'
 on:
   push:
     branches:
-      - test-action
+      - release
 
 jobs:
   build-binaries:
