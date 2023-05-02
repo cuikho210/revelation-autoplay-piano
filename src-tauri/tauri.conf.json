@@ -74,6 +74,10 @@
 
       "os": {
         "all": true
+      },
+
+      "app": {
+        "all": true
       }
     },
     "bundle": {
