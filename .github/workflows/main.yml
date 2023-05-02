@@ -27,7 +27,6 @@ jobs:
         run: |
           "release_body=$(Get-Content ./release_message.txt)" >> $env:GITHUB_ENV
       - uses: tauri-apps/tauri-action@dev
-        id: build_bundle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
@@ -39,8 +38,10 @@ jobs:
           releaseDraft: true
           prerelease: false
           includeUpdaterJson: true
-      - name: Update gist updater.json
-        env:
-          UPDATER_JSON_PATH: ${{ steps.build_bundle.outputs.artifactPaths }}
-        run: |
-          Write-Output $env:UPDATER_JSON_PATH
+      - name: Update updater json file on gist
+        uses: exuanbo/actions-deploy-gist@v1
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gist_id: 115b4e121626ff3860f93c50acae8473
+          file_path: D:/a/revelation-autoplay-piano/revelation-autoplay-piano/latest.json
+      - uses: actions/checkout@v3
