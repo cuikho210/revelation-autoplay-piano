@@ -21,7 +21,7 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install frontend dependencies
-        run: yarn install 
+        run: yarn install
       - name: Get release message
         shell: pwsh
         run: |
@@ -44,4 +44,3 @@ jobs:
           token: ${{ secrets.GIST_TOKEN }}
           gist_id: 115b4e121626ff3860f93c50acae8473
           file_path: latest.json
-      - uses: actions/checkout@v3
