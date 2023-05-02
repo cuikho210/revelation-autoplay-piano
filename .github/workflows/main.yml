@@ -43,5 +43,5 @@ jobs:
         with:
           token: ${{ secrets.GIST_TOKEN }}
           gist_id: 115b4e121626ff3860f93c50acae8473
-          file_path: D:/a/revelation-autoplay-piano/revelation-autoplay-piano/latest.json
+          file_path: latest.json
       - uses: actions/checkout@v3
