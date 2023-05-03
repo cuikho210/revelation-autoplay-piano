@@ -6,8 +6,8 @@
 |h|      \  ,_.-   )
 |o| ~^~^~^`- ~^ ~^ '~^~^~^~
 |2| 
-|1| ------ MTLKMS v2 ------
-|0| -- Author: Cuikho210 --
+|1| ------ Revelation Autoplay Piano ------
+|0| ---------- Author: Cuikho210 ----------
 \*/
 
 import { createApp } from 'vue'

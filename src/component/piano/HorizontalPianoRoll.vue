@@ -166,7 +166,7 @@ async function saveMusic() {
 
 .navbar {
     position: sticky;
-    top: 41px;
+    top: 37.78px;
     display: flex;
     justify-content: center;
     align-items: center;
