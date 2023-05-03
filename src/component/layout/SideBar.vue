@@ -1,8 +1,16 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue"
+import { getVersion } from "@tauri-apps/api/app"
 import useLayoutStore from "../../store/layout.store"
 import SidebarButton from "../button/SidebarButton.vue"
 
 let layoutStore = useLayoutStore()
+let message = () => layoutStore.locale.message
+let app_version = ref("")
+
+onMounted(async () => {
+    app_version.value = await getVersion()
+})
 
 </script>
 
@@ -22,19 +30,20 @@ let layoutStore = useLayoutStore()
     }">
         <header data-tauri-drag-region>
             <div>
-                <span class="material-icons-round">piano</span>
+                <img class="icon" src="/icon-128x128.png" alt="icon">
                 <h3>Revelation Autoplay Piano</h3>
+                <p>Version {{ app_version }}</p>
                 <p>Made by <a target="_blank" href="https://github.com/cuikho210">cuikho210</a></p>
-                <small>Mã nguồn mở tại <a target="_blank" href="https://github.com/cuikho210/revelation-autoplay-piano">@cuikho210/revelation-autoplay-piano</a></small>
+                <small>Open source at <a target="_blank" href="https://github.com/cuikho210/revelation-autoplay-piano">@cuikho210/revelation-autoplay-piano</a></small>
             </div>
         </header>
 
         <main>
             <div>
-                <SidebarButton icon="home" href="/">Trang Chủ</SidebarButton>
-                <SidebarButton icon="piano" href="/add-music">Thêm Nhạc</SidebarButton>
-                <SidebarButton icon="piano" href="/music">Danh Sách Nhạc</SidebarButton>
-                <SidebarButton icon="settings" href="/setting">Cài Đặt</SidebarButton>
+                <SidebarButton icon="home" href="/">{{ message().sidebar_button_home }}</SidebarButton>
+                <SidebarButton icon="piano" href="/add-music">{{ message().sidebar_button_add_music }}</SidebarButton>
+                <SidebarButton icon="piano" href="/music">{{ message().sidebar_button_list_music }}</SidebarButton>
+                <SidebarButton icon="settings" href="/setting">{{ message().sidebar_button_setting }}</SidebarButton>
             </div>
         </main>
     </div>
@@ -86,11 +95,9 @@ let layoutStore = useLayoutStore()
             padding: .25rem;
             padding-bottom: 1rem;
 
-            .material-icons-round {
-                background-color: $color-primary-1;
-                padding: .5rem;
+            .icon {
                 border-radius: 50%;
-                font-size: 32px;
+                width: 64px;
             }
 
             a {

@@ -1,37 +1,82 @@
 <script setup lang="ts">
+import { reactive } from 'vue'
 import { appWindow } from '@tauri-apps/api/window'
 import { exit } from "@tauri-apps/api/process"
 import { useRouter } from "vue-router"
 import useLayoutStore from "../../store/layout.store"
+import locale from "../../util/locale"
+import PrimaryDialog from './PrimaryDialog.vue'
 
 let route = useRouter()
 let layoutStore = useLayoutStore()
+let locale_list = locale.getLocaleList()
+
+const changeLocale = reactive({
+    is_show: false,
+
+    Show() {
+        changeLocale.is_show = true
+    },
+
+    Hide() {
+        changeLocale.is_show = false
+    },
+
+    Change(locale: Locale.Locale) {
+        if (locale.is_current_locale) return
+        layoutStore.setLocale(locale.key)
+        changeLocale.Hide()
+    }
+})
 
 </script>
 
 <template>
-<section data-tauri-drag-region>
-    <div data-tauri-drag-region class="left">
-        <span @click="layoutStore.toggleMenu()" class="btn btn-open-menu material-icons-round" title="Open Menu">menu</span>
-        <span @click="route.back()" class="btn btn-back material-icons-round" title="Back">arrow_back_ios_new</span>
-        <span class="title">{{ layoutStore.document_title }}</span>
-    </div>
+    <Transition name="fade-in-fast">
+        <PrimaryDialog
+            title="Select Language"
+            v-model="changeLocale.is_show"
+            v-show="changeLocale.is_show"
+        >
+            <div class="locale">
+                <button
+                    v-for="locale in locale_list"
+                    :key="locale.key"
+                    @click="changeLocale.Change(locale)"
+                    :class="{
+                        btn: true,
+                        active: locale.is_current_locale
+                    }"
+                >
+                    {{ locale.name }}
+                </button>
+            </div>
+        </PrimaryDialog>
+    </Transition>
 
-    <div class="right">
-        <span @click="layoutStore.toggleTheme()" class="btn material-icons-round" title="Toggle Theme">
-            {{ layoutStore.theme_mode == "light" ? "light_mode" : "dark_mode" }}
-        </span>
+    <section class="navbar" data-tauri-drag-region>
+        <div data-tauri-drag-region class="left">
+            <span @click="layoutStore.toggleMenu()" class="btn btn-open-menu material-icons-round" title="Open Menu">menu</span>
+            <span @click="route.back()" class="btn btn-back material-icons-round" title="Back">arrow_back_ios_new</span>
+            <span class="title">{{ layoutStore.document_title }}</span>
+        </div>
 
-        <span @click="appWindow.minimize()" class="btn btn-minimize material-icons-round" title="Minimize">remove</span>
-        <span @click="exit()" class="btn btn-close material-icons-round" title="Close">close</span>
-    </div>
-</section>
+        <div class="right">
+            <span @click="layoutStore.toggleTheme()" class="btn material-icons-round" title="Toggle Theme">
+                {{ layoutStore.theme_mode == "light" ? "light_mode" : "dark_mode" }}
+            </span>
+            
+            <span @click="changeLocale.Show()" class="btn material-icons-round" title="Language">translate</span>
+            <span @click="appWindow.minimize()" class="btn btn-minimize material-icons-round" title="Minimize">remove</span>
+            <span @click="exit()" class="btn btn-close material-icons-round" title="Close">close</span>
+        </div>
+    </section>
 </template>
 
 <style scoped lang="scss">
 @import "../../asset/scss/config.scss";
 
-section {
+.navbar {
     position: sticky;
     top: 0;
     left: 0;
@@ -85,6 +130,32 @@ section {
                 background-color: #ff746a;
             }
         }
+    }
+}
+
+.locale {
+    .btn {
+        cursor: pointer;
+        display: block;
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: .7rem;
+        margin-bottom: 7px;
+        font-family: $font-family-primary;
+        background-color: var(--color-bg-primary);
+        color: var(--color-text-primary);
+        border-radius: 4px;
+        transition: background-color $transition-time ease-out;
+
+        &:not(.active):hover {
+            background-color: rgba($color-primary-1, 0.07);
+        }
+    }
+
+    .active {
+        cursor: default;
+        background-color: rgba($color-primary-2, 0.4);
     }
 }
 

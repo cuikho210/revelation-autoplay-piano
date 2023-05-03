@@ -10,10 +10,6 @@ const emit = defineEmits(["update:modelValue"])
 function hide() {
     emit("update:modelValue", false)
 }
-
-function show() {
-    emit("update:modelValue", true)
-}
 </script>
 
 <template>
@@ -61,18 +57,25 @@ section {
         display: block;
         background-color: var(--color-bg-primary);
         width: 400px;
-        max-width: 100%;
-        max-height: 100%;
+        max-width: calc(100% - 1rem);
+        max-height: calc(100% - 1rem);
         z-index: 41;
         border-radius: 7px;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         box-shadow: 4px 4px 1rem rgba(0, 0, 0, 0.04);
 
         .header {
+            position: sticky;
+            top: 0px;
+            left: 0px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.04);
+            background-color: rgba(var(--color-bg-primary--rgb), 0.8);
+            backdrop-filter: blur(7px);
+            z-index: 15;
 
             .material-icons-round {
                 color: rgb(214, 0, 0);

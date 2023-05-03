@@ -10,7 +10,7 @@ const router = createRouter({
             path: "/",
             component: () => import("../view/HomeView.vue"),
             meta: {
-                title: "Trang Chủ"
+                title: "page_title_home"
             }
         },
 
@@ -19,7 +19,7 @@ const router = createRouter({
             path: "/add-music",
             component: () => import("../view/AddMusicView.vue"),
             meta: {
-                title: "Thêm Nhạc"
+                title: "page_title_addmusic"
             }
         },
 
@@ -28,7 +28,7 @@ const router = createRouter({
             path: "/music",
             component: () => import("../view/ListMusicView.vue"),
             meta: {
-                title: "Danh Sách Nhạc"
+                title: "page_title_list_music"
             }
         },
 
@@ -37,7 +37,7 @@ const router = createRouter({
             path: "/setting",
             component: () => import("../view/SettingView.vue"),
             meta: {
-                title: "Cài Đặt"
+                title: "page_title_setting"
             }
         },
 
@@ -46,21 +46,21 @@ const router = createRouter({
             name: "404",
             component: () => import("../view/404View.vue"),
             meta: {
-                title: "Không tìm thấy trang"
+                title: "page_title_404"
             }
         }
     ],
 
     scrollBehavior(_to, _from, savedPosition) {
         return new Promise((resolve) => {
-            // setTimeout(() => {
+            setTimeout(() => {
                 if (savedPosition) {
                     resolve(savedPosition)
                 }
                 else {
                     resolve({ top: 0 })
                 }
-            // }, 300)
+            }, 300)
         })
     }
 })
