@@ -62,7 +62,7 @@ section {
         z-index: 41;
         border-radius: 7px;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
         box-shadow: 4px 4px 1rem rgba(0, 0, 0, 0.04);
 
         .header {
@@ -75,6 +75,7 @@ section {
             border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.04);
             background-color: rgba(var(--color-bg-primary--rgb), 0.8);
             backdrop-filter: blur(7px);
+            z-index: 15;
 
             .material-icons-round {
                 color: rgb(214, 0, 0);

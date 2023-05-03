@@ -4,6 +4,7 @@ import { useRouter } from "vue-router"
 import { confirm } from "@tauri-apps/api/dialog"
 import { removeFile, removeDir } from "@tauri-apps/api/fs"
 import { invoke } from "@tauri-apps/api"
+import useLayoutStore from "../../store/layout.store"
 import { CreateMusicControlWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 import PrimaryDialog from "../layout/PrimaryDialog.vue"
@@ -18,6 +19,8 @@ const prop = defineProps<{
 
 const emit = defineEmits(["on:remove", "on:rename"])
 
+const layoutStore = useLayoutStore()
+const message = () => layoutStore.locale.message
 const router = useRouter()
 const music_el = ref<HTMLDivElement>()
 const background = ref<HTMLDivElement>()
@@ -87,7 +90,7 @@ function openEditor() {
 async function openRemovePopup() {
     closeContextMenu()
 
-    let is_confirm = await confirm("Bạn có chắc muốn xóa tệp này không?")
+    let is_confirm = await confirm(message().music_delete_file_confirm)
 
     if (is_confirm) {
         if (prop.type == "collection") await removeDir(prop.path, { recursive: true })
@@ -116,8 +119,6 @@ let rename = reactive({
         })
 
         emit("on:rename")
-        // rename.is_show = false
-        // rename.new_name = prop.name
     }
 })
 
@@ -139,15 +140,15 @@ let rename = reactive({
 
     <div ref="background" class="background"></div>
     <div ref="context_menu" class="context-menu">
-        <div class="btn" @click="open">Open</div>
-        <div class="btn" @click="openEditor" v-if="type === 'music'">Edit</div>
-        <div class="btn" @click="rename.Open">Rename</div>
-        <div class="btn" @click="openRemovePopup">Remove</div>
+        <div class="btn" @click="open">{{ message().music_context_menu_open }}</div>
+        <div class="btn" @click="openEditor" v-if="type === 'music'">{{ message().music_context_menu_edit }}</div>
+        <div class="btn" @click="rename.Open">{{ message().music_context_menu_rename }}</div>
+        <div class="btn" @click="openRemovePopup">{{ message().music_context_menu_remove }}</div>
     </div>
 
     <Transition name="fade-in-fast">
         <PrimaryDialog
-            title="Đổi Tên"
+            :title="message().music_context_menu_rename"
             v-model="rename.is_show"
             v-show="rename.is_show"
         >
@@ -155,14 +156,14 @@ let rename = reactive({
                 icon="tag"
                 type="text"
                 width="100%"
-                placeholder="Tên mới"
+                :placeholder="message().music_rename_input_placeholder"
                 v-model="rename.new_name"
             />
 
             <PrimaryButton
                 icon="drive_file_rename_outline"
                 @click="rename.Rename"
-            >Đổi Tên</PrimaryButton>
+            > {{ message().music_context_menu_rename }} </PrimaryButton>
         </PrimaryDialog>
     </Transition>
 </div>

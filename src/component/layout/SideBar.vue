@@ -34,7 +34,7 @@ onMounted(async () => {
                 <h3>Revelation Autoplay Piano</h3>
                 <p>Version {{ app_version }}</p>
                 <p>Made by <a target="_blank" href="https://github.com/cuikho210">cuikho210</a></p>
-                <small>Mã nguồn mở tại <a target="_blank" href="https://github.com/cuikho210/revelation-autoplay-piano">@cuikho210/revelation-autoplay-piano</a></small>
+                <small>Open source at <a target="_blank" href="https://github.com/cuikho210/revelation-autoplay-piano">@cuikho210/revelation-autoplay-piano</a></small>
             </div>
         </header>
 

@@ -5,6 +5,7 @@ import locale from "../util/locale"
 const useLayoutStore = defineStore("layout", {
     state() {
         return {
+            document_key: '',
             document_title: '',
             is_menu_open: false,
             theme_mode: <"light" | "dark">("light"),
@@ -25,7 +26,12 @@ const useLayoutStore = defineStore("layout", {
             this.is_menu_open = true
         },
 
-        async setTitle(title: string) {
+        async setTitle(title_key?: string) {
+            if (!title_key) title_key = this.document_key
+            else this.document_key = title_key
+            
+            const title = this.locale.message[title_key as keyof Locale.Message] || ""
+
             this.document_title = title
             document.title = title
             await appWindow.setTitle(title)
@@ -68,6 +74,7 @@ const useLayoutStore = defineStore("layout", {
         setLocale(key: string) {
             if (locale.setLocale(key)) {
                 this.locale = locale.getCurrentLocale()
+                this.setTitle()
             }
         }
     }

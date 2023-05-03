@@ -141,7 +141,7 @@ const changeLocale = reactive({
         outline: none;
         width: 100%;
         padding: .7rem;
-        margin: 4px;
+        margin-bottom: 7px;
         font-family: $font-family-primary;
         background-color: var(--color-bg-primary);
         color: var(--color-text-primary);

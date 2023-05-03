@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, watch } from "vue"
 import { useRoute } from "vue-router"
+import useLayoutStore from "../store/layout.store"
 import { ListMusicAndCollection, CreateCollection, GetCollectionBreadcrumb } from '../util/music'
 import { ConvertMidiToJsonFromFile } from "../util/converter"
 import MusicFileEntry from "../component/piano/MusicFileEntry.vue"
@@ -10,7 +11,9 @@ import PrimaryButton from "../component/button/PrimaryButton.vue"
 import PrimaryDialog from "../component/layout/PrimaryDialog.vue"
 import type { FileEntry } from "@tauri-apps/api/fs"
 
-let route = useRoute()
+const route = useRoute()
+const layoutStore = useLayoutStore()
+const message = () => layoutStore.locale.message
 let is_loaded = ref(false)
 let list_music = ref<FileEntry[]>([])
 let list_collection = ref<FileEntry[]>([])
@@ -77,19 +80,19 @@ let createCollection = reactive({
             type="search"
             icon="search"
             v-model="search_string"
-            placeholder="Search..."
+            :placeholder="message().music_searchbar_placeholder"
         />
 
         <IconOnlyButton
             icon="create_new_folder"
             @click="createCollection.Open"
-            title="Create Collection"
+            :title="message().music_create_collection_button"
         />
 
         <IconOnlyButton
             icon="audio_file"
             @click="importFromMIDI"
-            title="Import MIDI file"
+            :title="message().music_import_midi_file_button"
         />
     </div>
 
@@ -132,7 +135,7 @@ let createCollection = reactive({
 
     <Transition name="fade-in-fast">
         <PrimaryDialog
-            title="Create Collection"
+            :title="message().music_create_collection_button"
             v-model="createCollection.is_show"
             v-show="createCollection.is_show"
         >
@@ -140,14 +143,14 @@ let createCollection = reactive({
                 icon="tag"
                 type="text"
                 width="100%"
-                placeholder="Collection name"
+                :placeholder="message().music_create_collection_placeholder"
                 v-model="createCollection.collection_name"
             />
 
             <PrimaryButton
                 icon="add"
                 @click="createCollection.Create"
-            >Create</PrimaryButton>
+            > {{ message().music_create_collection_button }} </PrimaryButton>
         </PrimaryDialog>
     </Transition>
 </section>
