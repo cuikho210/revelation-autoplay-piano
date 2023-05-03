@@ -36,3 +36,21 @@ namespace Music {
         data: Beat[]
     }
 }
+
+namespace Locale {
+    interface Message {
+        sidebar_button_home: string
+        sidebar_button_add_music: string
+        sidebar_button_list_music: string
+        sidebar_button_setting: string
+
+
+    }
+
+    interface Locale {
+        key: string
+        name: string
+        is_current_locale: boolean
+        message: Message
+    }
+}

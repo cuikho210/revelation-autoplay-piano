@@ -1,12 +1,14 @@
 import { defineStore } from "pinia"
 import { appWindow } from '@tauri-apps/api/window'
+import locale from "../util/locale"
 
 const useLayoutStore = defineStore("layout", {
     state() {
         return {
             document_title: '',
             is_menu_open: false,
-            theme_mode: <"light" | "dark">("light")
+            theme_mode: <"light" | "dark">("light"),
+            locale: locale.getCurrentLocale()
         }
     },
 
@@ -61,6 +63,12 @@ const useLayoutStore = defineStore("layout", {
             else this.theme_mode = "dark"
 
             this.setTheme()
+        },
+
+        setLocale(key: string) {
+            if (locale.setLocale(key)) {
+                this.locale = locale.getCurrentLocale()
+            }
         }
     }
 })

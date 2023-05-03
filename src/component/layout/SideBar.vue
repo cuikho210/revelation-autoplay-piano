@@ -5,6 +5,7 @@ import useLayoutStore from "../../store/layout.store"
 import SidebarButton from "../button/SidebarButton.vue"
 
 let layoutStore = useLayoutStore()
+let message = () => layoutStore.locale.message
 let app_version = ref("")
 
 onMounted(async () => {
@@ -39,10 +40,10 @@ onMounted(async () => {
 
         <main>
             <div>
-                <SidebarButton icon="home" href="/">Trang Chủ</SidebarButton>
-                <SidebarButton icon="piano" href="/add-music">Thêm Nhạc</SidebarButton>
-                <SidebarButton icon="piano" href="/music">Danh Sách Nhạc</SidebarButton>
-                <SidebarButton icon="settings" href="/setting">Cài Đặt</SidebarButton>
+                <SidebarButton icon="home" href="/">{{ message().sidebar_button_home }}</SidebarButton>
+                <SidebarButton icon="piano" href="/add-music">{{ message().sidebar_button_add_music }}</SidebarButton>
+                <SidebarButton icon="piano" href="/music">{{ message().sidebar_button_list_music }}</SidebarButton>
+                <SidebarButton icon="settings" href="/setting">{{ message().sidebar_button_setting }}</SidebarButton>
             </div>
         </main>
     </div>

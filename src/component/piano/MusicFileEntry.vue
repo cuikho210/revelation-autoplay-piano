@@ -230,19 +230,19 @@ let rename = reactive({
     border: 1px solid rgba(var(--color-text-primary--rgb), 0.02);
     border-radius: 4px;
     overflow: hidden;
-    box-shadow: 4px 4px 1rem rgba(var(--color-text-primary--rgb), 0.04);
+    box-shadow: 4px 4px 1rem rgba(0, 0, 0, 0.04);
     background-color: var(--color-bg-primary);
     visibility: hidden;
     opacity: 0;
     transition:
-        visibility $transition-time,
-        opacity $transition-time,
-        background-color $transition-time;
+        visibility $transition-time ease-out,
+        opacity $transition-time ease-out,
+        background-color $transition-time ease-out;
 
     .btn {
         padding: .4rem .7rem;
         cursor: pointer;
-        transition: background-color $transition-time--short;
+        transition: background-color $transition-time--short ease-out;
 
         &:hover {
             background-color: rgba($color-primary-1, 0.4);
