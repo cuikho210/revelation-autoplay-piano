@@ -16,7 +16,10 @@ export async function SaveMusic(music_name: string, music: Music.Music, output_d
     let music_file_path = await resolve(music_dir_path, file_name)
     
     let is_music_dir_exist = await exists(music_dir_path)
-    if (!is_music_dir_exist) await createDir(music_dir_path)
+    if (!is_music_dir_exist) {
+        console.log("Directory does not exist. Start creating a new one.")
+        await createDir(music_dir_path, { recursive: true })
+    }
 
     await writeTextFile(music_file_path, JSON.stringify(music))
 }
@@ -28,7 +31,10 @@ export async function ListAll(path?: string): Promise<FileEntry[]> {
     else music_dir_path = await GetMusicDir()
 
     let is_music_dir_exist = await exists(music_dir_path)
-    if (!is_music_dir_exist) throw new Error("Directory does not exist")
+    if (!is_music_dir_exist) {
+        console.log("Directory does not exist. Start creating a new one.")
+        await createDir(music_dir_path, { recursive: true })
+    }
 
     let entries = await readDir(music_dir_path)
     return entries
