@@ -26,6 +26,7 @@ function closeContextMenu(event?: MouseEvent) {
 
 function openContextMenu(event: MouseEvent) {
     event.preventDefault()
+    event.stopPropagation()
     if (!background.value || !context_menu.value) return
 
     let top = event.clientY

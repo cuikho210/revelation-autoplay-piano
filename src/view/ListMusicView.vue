@@ -9,6 +9,8 @@ import PrimaryInput from "../component/input/PrimaryInput.vue"
 import IconOnlyButton from "../component/button/IconOnlyButton.vue"
 import PrimaryButton from "../component/button/PrimaryButton.vue"
 import PrimaryDialog from "../component/layout/PrimaryDialog.vue"
+import ContextMenu from "../component/layout/ContextMenu.vue"
+import ContextMenuItem from "../component/layout/ContextMenuItem.vue"
 import type { FileEntry } from "@tauri-apps/api/fs"
 
 const route = useRoute()
@@ -18,6 +20,8 @@ let is_loaded = ref(false)
 let list_music = ref<FileEntry[]>([])
 let list_collection = ref<FileEntry[]>([])
 let collection_breadcrumb = ref<FileEntry[]>([])
+let section_el = ref<HTMLElement>()
+let is_open_context_menu = ref(false)
 let search_string = ref("")
 let current_path: string | undefined
 
@@ -51,8 +55,13 @@ async function loadCollection(path?: string) {
 }
 
 async function importFromMIDI() {
+    closeContextMenu()
     await ConvertMidiToJsonFromFile(current_path)
     await loadCollection()
+}
+
+function closeContextMenu() {
+    is_open_context_menu.value = false
 }
 
 let createCollection = reactive({
@@ -61,6 +70,7 @@ let createCollection = reactive({
 
     Open() {
         createCollection.is_show = true
+        closeContextMenu()
     },
 
     Create() {
@@ -73,7 +83,7 @@ let createCollection = reactive({
 </script>
 
 <template>
-<section class="container-md" :key="route.fullPath">
+<section ref="section_el" class="container-md" :key="route.fullPath">
     <div class="navbar">
         <PrimaryInput
             class="search"
@@ -153,11 +163,31 @@ let createCollection = reactive({
             > {{ message().music_create_collection_button }} </PrimaryButton>
         </PrimaryDialog>
     </Transition>
+
+    <ContextMenu
+        v-if="section_el"
+        :watch_element="section_el"
+        v-model="is_open_context_menu"
+    >
+        <ContextMenuItem
+            icon="create_new_folder"
+            @click="createCollection.Open"
+        > {{ message().music_create_collection_button }} </ContextMenuItem>
+
+        <ContextMenuItem
+            icon="audio_file"
+            @click="importFromMIDI"
+        > {{ message().music_import_midi_file_button }} </ContextMenuItem>
+    </ContextMenu>
 </section>
 </template>
 
 <style scoped lang="scss">
 @import "../asset/scss/container.scss";
+
+.container-md {
+    min-height: calc(100vh - 37.78px);
+}
 
 .navbar {
     margin-bottom: 1rem;
