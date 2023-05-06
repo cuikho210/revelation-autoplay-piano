@@ -31,15 +31,13 @@ export async function SavePiano(piano: Piano.Piano84Key) {
     await emit("piano_save", piano)
 }
 
-export class PianoPlayer {
-    private piano: Piano.Piano84Key
-    private music: Music.Music
-    private time_loop: number
-    private current_beat_index: number = 0
-    private is_playing: boolean = false
+class Player {
+    protected music: Music.Music
+    protected time_loop: number
+    protected current_beat_index: number = 0
+    protected is_playing: boolean = false
 
-    constructor(piano: Piano.Piano84Key, music: Music.Music) {
-        this.piano = piano
+    constructor(music: Music.Music) {
         this.music = music
         this.time_loop = 7500 / music.tempo // 60 * 1000 / (tempo * 8)
     }
@@ -63,7 +61,20 @@ export class PianoPlayer {
         else this.Play()
     }
 
-    private loop() {
+    protected loop() {
+
+    }
+}
+
+export class PianoPlayer extends Player {
+    private piano: Piano.Piano84Key
+
+    constructor(piano: Piano.Piano84Key, music: Music.Music) {
+        super(music)
+        this.piano = piano
+    }
+
+    loop() {
         if (!this.is_playing) return
         
         if (this.current_beat_index >= this.music.data.length) {
@@ -103,6 +114,29 @@ export class PianoPlayer {
     }
 }
 
+export class PreviewPlayer extends Player {
+    constructor(music: Music.Music) {
+        super(music)
+    }
+
+    loop() {
+        if (!this.is_playing) return
+        
+        if (this.current_beat_index >= this.music.data.length) {
+            this.Stop()
+            return
+        }
+
+        for (let piano_key of this.music.data[this.current_beat_index]) {
+            if (!piano_key) return
+            PlaySound(piano_key)
+        }
+
+        this.current_beat_index += 1
+        setTimeout(() => this.loop(), this.time_loop)
+    }
+}
+
 export async function CreateMusicControlWindow(music_path: string) {
     new WebviewWindow("play_music_controller", {
         url: "/pages/play_music/play_music_controller.html?path=" + music_path,
@@ -111,5 +145,24 @@ export async function CreateMusicControlWindow(music_path: string) {
         resizable: false,
         width: 240,
         height: 240
+    })
+}
+
+export async function CreateMusicPreviewWindow(
+    music_path: string,
+    theme: 'light' | 'dark'
+) {
+    let url = "/pages/play_music/preview_music_controller.html"
+        + `?path=${music_path}`
+        + `&theme=${theme}`
+
+    new WebviewWindow("play_music_controller", {
+        url,
+        title: "Preview Music",
+        alwaysOnTop: false,
+        resizable: false,
+        width: 360,
+        height: 200,
+        center: true
     })
 }
