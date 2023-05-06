@@ -21,7 +21,7 @@ const prop = defineProps<{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: .4rem .7rem;
+    padding: .3rem .5rem;
     transition: background-color $transition-time--short ease-out;
 
     &:hover {
