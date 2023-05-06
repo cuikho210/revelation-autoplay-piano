@@ -51,6 +51,11 @@ a {
     }
 }
 
+hr {
+    border: none;
+    border-bottom: 1px solid rgba(var(--color-text-primary--rgb), 0.07);
+}
+
 .material-icons,
 .material-icons-round,
 .material-icons-outlined,
