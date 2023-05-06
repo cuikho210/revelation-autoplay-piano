@@ -22,7 +22,6 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             input::touch_tap,
-            piano::play_note,
             util::rename
         ])
         .run(tauri::generate_context!())

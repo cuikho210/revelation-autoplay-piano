@@ -1,6 +1,33 @@
 import { emit } from '@tauri-apps/api/event'
 import { invoke } from "@tauri-apps/api/tauri"
 import { WebviewWindow } from "@tauri-apps/api/window"
+import * as Tone from "tone"
+
+const sampler = createPianoSampler()
+
+export enum PlayStatus {
+    Playing,
+    Paused,
+    Stopped
+}
+
+function createPianoSampler(piano?: Piano.Piano84Key) {
+    if (!piano) piano = GeneratePiano(1, 7)
+    const urls: { [key: string]: string } = {}
+
+    for (let note of piano) {
+        let note_name = note.key + note.octa
+        let file_name = note_name + ".mp3"
+
+        urls[note_name] = file_name
+    }
+
+    return new Tone.Sampler({
+        urls,
+        release: 1,
+        baseUrl: "/piano_key/"
+    }).toDestination()
+}
 
 export function GeneratePiano(octa_start: number, length: number): Piano.Note[] {
     let octa_template: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
@@ -24,7 +51,8 @@ export function GeneratePiano(octa_start: number, length: number): Piano.Note[] 
 }
 
 export async function PlaySound(note: string) {
-    await invoke("play_note", { note })
+    await Tone.loaded()
+    sampler.triggerAttackRelease(note, 4)
 }
 
 export async function SavePiano(piano: Piano.Piano84Key) {
@@ -35,7 +63,7 @@ class Player {
     protected music: Music.Music
     protected time_loop: number
     protected current_beat_index: number = 0
-    protected is_playing: boolean = false
+    protected status: PlayStatus = PlayStatus.Stopped
 
     constructor(music: Music.Music) {
         this.music = music
@@ -43,21 +71,21 @@ class Player {
     }
 
     public Play() {
-        this.is_playing = true
+        this.status = PlayStatus.Playing
         this.loop()
     }
 
     public Pause() {
-        this.is_playing = false
+        this.status = PlayStatus.Paused
     }
 
     public Stop() {
-        this.is_playing = false
+        this.status = PlayStatus.Stopped
         this.current_beat_index = 0
     }
 
     public TogglePlay() {
-        if (this.is_playing) this.Stop()
+        if (this.status == PlayStatus.Playing) this.Pause()
         else this.Play()
     }
 
@@ -75,7 +103,7 @@ export class PianoPlayer extends Player {
     }
 
     loop() {
-        if (!this.is_playing) return
+        if (this.status != PlayStatus.Playing) return
         
         if (this.current_beat_index >= this.music.data.length) {
             this.Stop()
@@ -120,7 +148,7 @@ export class PreviewPlayer extends Player {
     }
 
     loop() {
-        if (!this.is_playing) return
+        if (this.status != PlayStatus.Playing) return
         
         if (this.current_beat_index >= this.music.data.length) {
             this.Stop()
