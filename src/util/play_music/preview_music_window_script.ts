@@ -46,3 +46,7 @@ function setTitle(music_name: string) {
     let music_name_el = $("#music_name") as HTMLHeadingElement
     music_name_el.innerText = music_name
 }
+
+document.addEventListener("contextmenu", event => {
+    event.preventDefault()
+})
