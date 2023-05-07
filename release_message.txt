@@ -1,1 +1,1 @@
-Context menu in List Music. 
+Context menu in List Music. Control in player. Preview music.
