@@ -147,7 +147,7 @@ export class PreviewPlayer extends Player {
         super(music)
     }
 
-    loop() {
+    protected loop() {
         if (this.status != PlayStatus.Playing) return
         
         if (this.current_beat_index >= this.music.data.length) {
@@ -160,9 +160,13 @@ export class PreviewPlayer extends Player {
             PlaySound(piano_key)
         }
 
+        this.onLoop()
+
         this.current_beat_index += 1
         setTimeout(() => this.loop(), this.time_loop)
     }
+
+    protected onLoop() {}
 }
 
 export async function CreateMusicControlWindow(music_path: string) {
