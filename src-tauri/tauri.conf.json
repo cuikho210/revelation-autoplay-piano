@@ -8,7 +8,7 @@
   },
 
   "package": {
-    "version": "0.1.5",
+    "version": "0.1.6",
     "productName": "Revelation Autoplay Piano"
   },
 
@@ -91,9 +91,7 @@
       ],
       "identifier": "com.cuikho210.revelation-autoplay-piano",
       "targets": "all",
-      "resources": [
-        "./piano_key"
-      ],
+      "resources": [],
       "windows": {
         "wix": {
           "bannerPath": "./images/banner.png",

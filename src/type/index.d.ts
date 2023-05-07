@@ -29,6 +29,9 @@ namespace Piano {
 }
 
 namespace Music {
+    /**
+     * Example: `["A3", "Db4", "E4"]`
+    */
     type Beat = string[]
 
     interface Music {
@@ -53,6 +56,7 @@ namespace Locale {
         music_delete_file_confirm: string
         music_rename_input_placeholder: string
         music_context_menu_open: string
+        music_context_menu_preview: string
         music_context_menu_edit: string
         music_context_menu_rename: string
         music_context_menu_remove: string
@@ -60,6 +64,7 @@ namespace Locale {
         music_create_collection_button: string
         music_create_collection_placeholder: string
         music_import_midi_file_button: string
+        music_piano_profile_not_found: string
 
         setting_key_assignment_title: string
         setting_key_assignment_help: string

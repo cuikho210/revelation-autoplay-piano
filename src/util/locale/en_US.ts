@@ -17,6 +17,7 @@ const en_US: Locale.Locale = {
         music_delete_file_confirm: "Are you sure you want to delete this file?",
         music_rename_input_placeholder: "New name",
         music_context_menu_open: "Open",
+        music_context_menu_preview: "Preview",
         music_context_menu_edit: "Edit",
         music_context_menu_rename: "Rename",
         music_context_menu_remove: "Permanently delete",
@@ -24,6 +25,7 @@ const en_US: Locale.Locale = {
         music_create_collection_button: "Create a collection",
         music_create_collection_placeholder: "Collection name",
         music_import_midi_file_button: "Import MIDI file",
+        music_piano_profile_not_found: "Key configuration not found",
 
         setting_key_assignment_title: "Key Assignment",
         setting_key_assignment_help: "Match the dots on the screen with the piano keys C1 to B7, then close the window",

@@ -1,6 +1,4 @@
-import { listen } from "@tauri-apps/api/event"
-import { GetPianoConfig } from "../config_piano_key"
-import { PianoPlayer, PlayStatus } from "../piano"
+import { PreviewPlayer } from "../piano"
 import { GetMusicFromPath } from "../music"
 import { GetFileNameFromPath } from "../converter"
 import "../../asset/scss/page/preview_music_controller.scss"
@@ -14,11 +12,10 @@ async function main() {
     
     let music = await GetMusicFromPath(path)
     let music_name = await GetFileNameFromPath(path)
+
     setTitle(music_name)
 
-    let piano = await GetPianoConfig()
-
-    let player = new PianoPlayer(piano, music, {
+    new PreviewPlayer(music, {
         play_btn: $("#play_btn") as HTMLButtonElement,
         stop_btn: $("#stop_btn") as HTMLButtonElement,
         tempo_status: $("#tempo_status") as HTMLParagraphElement,
@@ -26,10 +23,6 @@ async function main() {
         time_status: $("#time_status") as HTMLParagraphElement,
         progress_bar: $("#progress_bar") as HTMLDivElement,
         progress_bar_progress: $("#progress_bar_progress") as HTMLDivElement
-    })
-
-    await listen("toggle_play", () => {
-        player.TogglePlay()
     })
 }
 

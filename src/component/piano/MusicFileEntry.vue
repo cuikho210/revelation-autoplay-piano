@@ -5,7 +5,7 @@ import { confirm } from "@tauri-apps/api/dialog"
 import { removeFile, removeDir } from "@tauri-apps/api/fs"
 import { invoke } from "@tauri-apps/api"
 import useLayoutStore from "../../store/layout.store"
-import { CreateMusicControlWindow } from "../../util/piano"
+import { CreateMusicControlWindow, CreateMusicPreviewWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 import PrimaryDialog from "../layout/PrimaryDialog.vue"
 import PrimaryButton from "../button/PrimaryButton.vue"
@@ -42,9 +42,14 @@ async function openPlayer() {
         await CreateMusicControlWindow(prop.path)
     }
     catch (e) {
-        alert("Chưa có cấu hình phím")
+        alert(message().music_piano_profile_not_found)
     }
 
+    closeContextMenu()
+}
+
+async function openPreviewWindow() {
+    CreateMusicPreviewWindow(prop.path, layoutStore.theme_mode)
     closeContextMenu()
 }
 
@@ -112,6 +117,7 @@ function closeContextMenu() {
         v-model="is_open_context_menu"
     >
         <ContextMenuItem icon="launch" @click="open">{{ message().music_context_menu_open }}</ContextMenuItem>
+        <ContextMenuItem icon="play_arrow" @click="openPreviewWindow" v-if="type === 'music'">{{ message().music_context_menu_preview }}</ContextMenuItem>
         <hr>
         <ContextMenuItem icon="edit_note" @click="openEditor" v-if="type === 'music'">{{ message().music_context_menu_edit }}</ContextMenuItem>
         <ContextMenuItem icon="drive_file_rename_outline" @click="rename.Open">{{ message().music_context_menu_rename }}</ContextMenuItem>
