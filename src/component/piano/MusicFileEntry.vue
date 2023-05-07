@@ -5,11 +5,13 @@ import { confirm } from "@tauri-apps/api/dialog"
 import { removeFile, removeDir } from "@tauri-apps/api/fs"
 import { invoke } from "@tauri-apps/api"
 import useLayoutStore from "../../store/layout.store"
-import { CreateMusicControlWindow } from "../../util/piano"
+import { CreateMusicControlWindow, CreateMusicPreviewWindow } from "../../util/piano"
 import { GetPianoConfig } from "../../util/config_piano_key"
 import PrimaryDialog from "../layout/PrimaryDialog.vue"
 import PrimaryButton from "../button/PrimaryButton.vue"
 import PrimaryInput from "../input/PrimaryInput.vue"
+import ContextMenu from "../layout/ContextMenu.vue"
+import ContextMenuItem from "../layout/ContextMenuItem.vue"
 
 const prop = defineProps<{
     type: "collection" | "music"
@@ -23,44 +25,7 @@ const layoutStore = useLayoutStore()
 const message = () => layoutStore.locale.message
 const router = useRouter()
 const music_el = ref<HTMLDivElement>()
-const background = ref<HTMLDivElement>()
-const context_menu = ref<HTMLDivElement>()
-
-onMounted(() => {
-    if (!music_el.value || !background.value || !context_menu.value) return
-
-    background.value.addEventListener("click", closeContextMenu)
-    background.value.addEventListener("contextmenu", closeContextMenu)
-    music_el.value.addEventListener("contextmenu", openContextMenu)
-})
-
-function closeContextMenu(event?: MouseEvent) {
-    if (event) event.preventDefault()
-    if (!background.value || !context_menu.value) return
-
-    background.value.style.visibility = "hidden"
-    context_menu.value.style.visibility = "hidden"
-    context_menu.value.style.opacity = "0"
-}
-
-function openContextMenu(event: MouseEvent) {
-    event.preventDefault()
-    if (!background.value || !context_menu.value) return
-
-    let top = event.clientY
-    let left = event.clientX
-    let rect = context_menu.value.getBoundingClientRect()
-
-    if (top + rect.height > window.innerHeight) top -= rect.height
-    if (left + rect.width > window.innerWidth) left -= rect.width
-
-    context_menu.value.style.top = top + "px"
-    context_menu.value.style.left = left + "px"
-
-    background.value.style.visibility = "initial"
-    context_menu.value.style.visibility = "initial"
-    context_menu.value.style.opacity = "1"
-}
+let is_open_context_menu = ref(false)
 
 function open() {
     if (prop.type === "music") openPlayer()
@@ -77,9 +42,14 @@ async function openPlayer() {
         await CreateMusicControlWindow(prop.path)
     }
     catch (e) {
-        alert("Chưa có cấu hình phím")
+        alert(message().music_piano_profile_not_found)
     }
 
+    closeContextMenu()
+}
+
+async function openPreviewWindow() {
+    CreateMusicPreviewWindow(prop.path, layoutStore.theme_mode)
     closeContextMenu()
 }
 
@@ -122,6 +92,9 @@ let rename = reactive({
     }
 })
 
+function closeContextMenu() {
+    is_open_context_menu.value = false
+}
 </script>
 
 <template>
@@ -138,13 +111,19 @@ let rename = reactive({
         <span class="text">{{ name }}</span>
     </div>
 
-    <div ref="background" class="background"></div>
-    <div ref="context_menu" class="context-menu">
-        <div class="btn" @click="open">{{ message().music_context_menu_open }}</div>
-        <div class="btn" @click="openEditor" v-if="type === 'music'">{{ message().music_context_menu_edit }}</div>
-        <div class="btn" @click="rename.Open">{{ message().music_context_menu_rename }}</div>
-        <div class="btn" @click="openRemovePopup">{{ message().music_context_menu_remove }}</div>
-    </div>
+    <ContextMenu
+        v-if="music_el"
+        :watch_element="music_el"
+        v-model="is_open_context_menu"
+    >
+        <ContextMenuItem icon="launch" @click="open">{{ message().music_context_menu_open }}</ContextMenuItem>
+        <ContextMenuItem icon="play_arrow" @click="openPreviewWindow" v-if="type === 'music'">{{ message().music_context_menu_preview }}</ContextMenuItem>
+        <hr>
+        <ContextMenuItem icon="edit_note" @click="openEditor" v-if="type === 'music'">{{ message().music_context_menu_edit }}</ContextMenuItem>
+        <ContextMenuItem icon="drive_file_rename_outline" @click="rename.Open">{{ message().music_context_menu_rename }}</ContextMenuItem>
+        <hr>
+        <ContextMenuItem icon="delete" @click="openRemovePopup">{{ message().music_context_menu_remove }}</ContextMenuItem>
+    </ContextMenu>
 
     <Transition name="fade-in-fast">
         <PrimaryDialog
@@ -214,40 +193,6 @@ let rename = reactive({
 
     .material-icons-round {
         color: $color-primary-1;
-    }
-}
-
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    visibility: hidden;
-}
-
-.context-menu {
-    position: fixed;
-    border: 1px solid rgba(var(--color-text-primary--rgb), 0.02);
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: 4px 4px 1rem rgba(0, 0, 0, 0.04);
-    background-color: var(--color-bg-primary);
-    visibility: hidden;
-    opacity: 0;
-    transition:
-        visibility $transition-time ease-out,
-        opacity $transition-time ease-out,
-        background-color $transition-time ease-out;
-
-    .btn {
-        padding: .4rem .7rem;
-        cursor: pointer;
-        transition: background-color $transition-time--short ease-out;
-
-        &:hover {
-            background-color: rgba($color-primary-1, 0.4);
-        }
     }
 }
 </style>

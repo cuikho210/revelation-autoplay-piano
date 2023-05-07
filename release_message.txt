@@ -1,1 +1,1 @@
-Update multiple language: English and Vietnamese
+Context menu in List Music. Control in player. Preview music.

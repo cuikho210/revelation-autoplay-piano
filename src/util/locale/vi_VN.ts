@@ -17,6 +17,7 @@ const vi_VN: Locale.Locale = {
         music_delete_file_confirm: "Bạn có chắc muốn xóa tệp này không?",
         music_rename_input_placeholder: "Tên mới",
         music_context_menu_open: "Mở",
+        music_context_menu_preview: "Xem trước",
         music_context_menu_edit: "Sửa",
         music_context_menu_rename: "Đổi tên",
         music_context_menu_remove: "Xóa vĩnh viễn",
@@ -24,6 +25,7 @@ const vi_VN: Locale.Locale = {
         music_create_collection_button: "Tạo bộ sưu tập",
         music_create_collection_placeholder: "Tên bộ sưu tập",
         music_import_midi_file_button: "Nhập tệp MIDI",
+        music_piano_profile_not_found: "Không tìm thấy cấu hình phím. Vui lòng cấu hình.",
 
         setting_key_assignment_title: "Gán Phím",
         setting_key_assignment_help: "Khớp các chấm trên màn hình với các phím đàn từ C1 đến B7, sau đó đóng cửa sổ lại",
