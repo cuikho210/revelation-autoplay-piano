@@ -13,7 +13,7 @@ function generateRelativePianoKeys(): Piano.Piano84Key {
     let default_y_position_black = 78
 
     let piano_keys: (keyof Piano.Octaves)[] = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
-    let size = 1.9
+    let size = 1.88
 
     function create_octa(octa: number, pre_key_position: Position): Piano.Note[] {
         // White key is 0, 2, 4, 5, 7, 9, 11
@@ -48,7 +48,7 @@ function generateRelativePianoKeys(): Piano.Piano84Key {
         return notes
     }
 
-    let octa1 = create_octa(1, { x: size, y: default_y_position_white })
+    let octa1 = create_octa(1, { x: size * 2, y: default_y_position_white })
     let octa2 = create_octa(2, octa1[octa1.length - 1].position)
     let octa3 = create_octa(3, octa2[octa1.length - 1].position)
     let octa4 = create_octa(4, octa3[octa1.length - 1].position)
@@ -56,8 +56,46 @@ function generateRelativePianoKeys(): Piano.Piano84Key {
     let octa6 = create_octa(6, octa5[octa1.length - 1].position)
     let octa7 = create_octa(7, octa6[octa1.length - 1].position)
 
+    let note_A0: Piano.Note = {
+        key: "A",
+        octa: 0,
+        position: {
+            x: octa1[0].position.x - (size * 2),
+            y: default_y_position_white
+        }
+    }
+
+    let note_Bb0: Piano.Note = {
+        key: "Bb",
+        octa: 0,
+        position: {
+            x: octa1[0].position.x - (size * 1.5),
+            y: default_y_position_black
+        }
+    }
+
+    let note_B0: Piano.Note = {
+        key: "B",
+        octa: 0,
+        position: {
+            x: octa1[0].position.x - size,
+            y: default_y_position_white
+        }
+    }
+
+    let note_C8: Piano.Note = {
+        key: "C",
+        octa: 8,
+        position: {
+            x: octa7[octa7.length - 1].position.x + size,
+            y: default_y_position_white
+        }
+    }
+
     return [
-        ...octa1, ...octa2, ...octa3, ...octa4, ...octa5, ...octa6, ...octa7
+        note_A0, note_Bb0, note_B0,
+        ...octa1, ...octa2, ...octa3, ...octa4, ...octa5, ...octa6, ...octa7,
+        note_C8
     ]
 }
 
