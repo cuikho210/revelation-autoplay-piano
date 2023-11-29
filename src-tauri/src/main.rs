@@ -2,7 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod piano;
-mod input;
+mod inject_touch;
 mod util;
 
 fn main() {
@@ -15,13 +15,13 @@ fn main() {
                 window_shadows::set_shadow(&window, true).unwrap();
             }
             
-            input::init_touch_injection();
+            inject_touch::init(app);
             piano::listen_piano_save(app);
 
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            input::touch_tap,
+            inject_touch::inject_touch_notes,
             util::rename
         ])
         .run(tauri::generate_context!())

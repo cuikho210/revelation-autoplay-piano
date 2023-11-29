@@ -47,7 +47,7 @@ export async function ConvertMidiToJsonFromFile(output_dir?: string) {
         quarter_note: midi.header.ppq,
         eighth_note: midi.header.ppq / 2,
         sixteenth_note: midi.header.ppq / 4,
-        thirty_second_note: midi.header.ppq / 8
+        thirty_second_note: midi.header.ppq / 8 // 1 phần 32 của nốt trắng
     }
 
     let duration_in_thirty_second_note = Math.ceil(midi.durationTicks / note_time.thirty_second_note)
@@ -71,7 +71,10 @@ export async function ConvertMidiToJsonFromFile(output_dir?: string) {
             let note_name = convertSharpNoteToFlatNote(note.pitch, note.octave)
             let index = Math.floor(note.ticks / note_time.thirty_second_note)
 
-            music.data[index].push(note_name)
+            music.data[index].push({
+                name: note_name,
+                duration_in_thirty_second_note: Math.floor(note.durationTicks / note_time.thirty_second_note),
+            })
         }
     }
 
@@ -83,4 +86,3 @@ export async function ConvertMidiToJsonFromFile(output_dir?: string) {
         output_dir
     )
 }
-

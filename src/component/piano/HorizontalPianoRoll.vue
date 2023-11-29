@@ -64,7 +64,7 @@ function loopPlayMusic() {
     music_data[current_playing_beat].is_playing = true
 
     music_data[current_playing_beat].data.forEach(note => {
-        PlaySound(note)
+        PlaySound(note.name)
     })
 
     current_playing_beat++

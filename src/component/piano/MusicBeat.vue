@@ -31,7 +31,7 @@ function loadData() {
     if (!prop.modelValue) return
 
     prop.modelValue.forEach(note => {
-        music_beat[note] = true
+        music_beat[note.name] = true
     })
 }
 
@@ -41,7 +41,10 @@ function updateBeat(note: string, is_active: boolean) {
     let beat: Music.Beat = []
     
     for (let note in music_beat) {
-        if (music_beat[note]) beat.push(note)
+        if (music_beat[note]) beat.push({
+            name: note,
+            duration_in_thirty_second_note: 1,
+        })
     }
 
     emit("update:modelValue", beat)

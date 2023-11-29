@@ -180,32 +180,16 @@ export class PianoPlayer extends Player {
             return
         }
 
-        let points: Position[] = []
+        let notes: Music.Note[] = []
 
-        for (let piano_key of this.music.data[this.current_beat_index]) {
-            if (!piano_key) return
+        for (let note of this.music.data[this.current_beat_index]) {
+            if (!note) return
 
-            let octa: number
-            let key_name: keyof Piano.Octaves
-
-            if (piano_key.length == 2) {
-                octa = Number(piano_key.at(1))
-                key_name = piano_key.at(0) as keyof Piano.Octaves
-            } else {
-                octa = Number(piano_key.at(2))
-                key_name = piano_key.slice(0, 2) as keyof Piano.Octaves
-            }
-
-            let piano_note = this.piano.find(note => note.key == key_name && note.octa == octa)
-            if (!piano_note) return
-
-            points.push({
-                x: piano_note.position.x,
-                y: piano_note.position.y
-            })
+            note.duration_in_ms = this.time_loop * note.duration_in_thirty_second_note;
+            notes.push(note)
         }
 
-        invoke("touch_tap", { points })
+        invoke("inject_touch_notes", { notes })
 
         this.onLoop()
         this.current_beat_index += 1
@@ -228,7 +212,7 @@ export class PreviewPlayer extends Player {
 
         for (let piano_key of this.music.data[this.current_beat_index]) {
             if (!piano_key) return
-            PlaySound(piano_key)
+            PlaySound(piano_key.name)
         }
 
         this.onLoop()
