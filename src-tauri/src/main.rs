@@ -16,7 +16,7 @@ fn main() {
             }
             
             inject_touch::init(app);
-            piano::listen_piano_save(app);
+            piano::init(app);
 
             Ok(())
         })
