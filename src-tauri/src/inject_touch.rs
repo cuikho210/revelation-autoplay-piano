@@ -21,7 +21,7 @@ use windows::Win32::{
 };
 
 const TOUCH_LENGTH: u32 = 88;
-const INTERVAL_DURATION_IN_MS: u64 = 32;
+const INTERVAL_DURATION_IN_MS: u64 = 16;
 static mut TOUCH_POINTERS: Lazy<HashMap<String, Touch>> = Lazy::new(|| HashMap::new());
 static mut MUSIC_NOTES_QUEUE: Lazy<Vec<piano::MusicNote>> = Lazy::new(|| Vec::new());
 static mut CURRENT_STATE: State = State::Idle;
