@@ -185,7 +185,7 @@ export class PianoPlayer extends Player {
         for (let note of this.music.data[this.current_beat_index]) {
             if (!note) return
 
-            note.duration_in_ms = this.time_loop * note.duration_in_thirty_second_note;
+            note.duration_in_ms = Math.round(this.time_loop * note.duration_in_thirty_second_note);
             notes.push(note)
         }
 
