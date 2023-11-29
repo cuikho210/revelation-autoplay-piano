@@ -35,7 +35,7 @@ yarn
 yarn tauri dev
 ```
 
-### Setup in Githhub, Build and Publish
+### Setup in Github, Build and Publish
 Fork this repo.  
 Clone it.  
 
