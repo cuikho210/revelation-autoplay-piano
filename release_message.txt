@@ -1,1 +1,2 @@
-Context menu in List Music. Control in player. Preview music.
+Add octa 0 and 8 in piano. \n
+Previously, holding any key, whether single or multiple, was unavailable. Now, we've gained the ability to hold a single key, but the functionality to hold multiple keys simultaneously remains inaccessible. \n

@@ -32,7 +32,13 @@ namespace Music {
     /**
      * Example: `["A3", "Db4", "E4"]`
     */
-    type Beat = string[]
+    interface Note {
+        name: string
+        duration_in_thirty_second_note: number
+        duration_in_ms?: number
+    }
+
+    type Beat = Note[]
 
     interface Music {
         tempo: number

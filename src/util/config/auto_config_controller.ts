@@ -23,7 +23,6 @@ async function main() {
 function listenEvents(window_size: PhysicalSize, window_position: PhysicalPosition) {
     let savePiano = () => {
         let piano = GenerateAbsolutePianoKeys(window_size, window_position)
-        console.log(window_size, window_position)
         SavePiano(piano)
     }
 
