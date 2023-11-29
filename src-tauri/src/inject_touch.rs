@@ -107,17 +107,19 @@ fn init_touch_pointers(app: &tauri::App) {
     let path_resolver = app.path_resolver();
     let piano_config = piano::get_piano_config(&path_resolver);
 
-    for (index, note) in piano_config.iter().enumerate() {
-        let key = note.key.to_owned() + &note.octa.to_string();
-        unsafe {
-            TOUCH_POINTERS.insert(
-                key,
-                Touch::new(
-                    index.try_into().unwrap(),
-                    note.position.x,
-                    note.position.y
-                ),
-            );
+    if let Some(piano_config) = piano_config {
+        for (index, note) in piano_config.iter().enumerate() {
+            let key = note.key.to_owned() + &note.octa.to_string();
+            unsafe {
+                TOUCH_POINTERS.insert(
+                    key,
+                    Touch::new(
+                        index.try_into().unwrap(),
+                        note.position.x,
+                        note.position.y
+                    ),
+                );
+            }
         }
     }
 }
